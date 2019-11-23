@@ -8,14 +8,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
+import com.challenge.data.model.Transaction;
+import com.google.gson.JsonObject;
+
 public abstract class ActionHandler extends AbstractHandler {
-	
+
 	public void buildHttpResponse(HttpServletResponse response, Request baseRequest,
-			int code, String responseStr) {
+			int code, Transaction transaction) {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.setStatus(code);
+		
+		JsonObject message = new JsonObject();
+		message.addProperty("transactionId", transaction.getId());
+		message.addProperty("sourceId", transaction.getSourceAccountId());
+		message.addProperty("targetId", transaction.getTargetAccountId());
+		message.addProperty("amount", transaction.getAmount());
+		message.addProperty("message", transaction.getMessage());
 
 		PrintWriter out = null;
 		try {
@@ -24,7 +34,7 @@ public abstract class ActionHandler extends AbstractHandler {
 //			handle exception
 		}
 
-		out.println(responseStr);
+		out.println(message.toString());
 		baseRequest.setHandled(true);
 	}
 	

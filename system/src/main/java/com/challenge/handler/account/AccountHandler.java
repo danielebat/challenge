@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.IRequestExecutor;
+import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
 
 public class AccountHandler extends ActionHandler {
@@ -25,13 +26,13 @@ public class AccountHandler extends ActionHandler {
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		String responseStr = "Unable to process request for account.";
+		Transaction transaction = new Transaction(null, null, null, null, "Unable to process delete request for account.");
 		
 		IRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
 		if(actionExecutor != null)
-			responseStr = actionExecutor.executeRequest(request);
+			transaction = actionExecutor.executeRequest(request);
 		
-		buildHttpResponse(response, baseRequest, HttpServletResponse.SC_OK, responseStr);
+		buildHttpResponse(response, baseRequest, HttpServletResponse.SC_OK, transaction);
 	}
 
 }

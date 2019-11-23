@@ -10,12 +10,10 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import com.challenge.handler.account.AccountHandler;
-import com.challenge.handler.transfer.TransferHandler;
 
 public class WebServer {
 	
 	private static final String ACCOUNT_CONTEXT_PATH = "/account";
-	private static final String TRANSFER_CONTEXT_PATH = "/transfer";
 	private static final int PORT = 8080;
 	private static final String HOST = "localhost";
 	private Server server;
@@ -26,7 +24,7 @@ public class WebServer {
 			@Named(ApplicationModule.WEBSERVER) ServerConnector connector,
 			@Named(ApplicationModule.WEBSERVER) Provider<ContextHandler> contextHandlerProvider,
 			@Named(ApplicationModule.WEBSERVER) ContextHandlerCollection contextHandlerCollection,
-			AccountHandler accountHandler, TransferHandler transferHandler) {
+			AccountHandler accountHandler) {
 		
 		this.server = server;
 		
@@ -39,12 +37,12 @@ public class WebServer {
         accountContext.setContextPath(ACCOUNT_CONTEXT_PATH);
         accountContext.setHandler(accountHandler);
         
-        ContextHandler transferContext = contextHandlerProvider.get();
-        transferContext.setContextPath(TRANSFER_CONTEXT_PATH);
-        transferContext.setHandler(transferHandler);
+//        ContextHandler transferContext = contextHandlerProvider.get();
+//        transferContext.setContextPath(TRANSFER_CONTEXT_PATH);
+//        transferContext.setHandler(transferHandler);
         
         contextHandlerCollection.addHandler(accountContext);
-        contextHandlerCollection.addHandler(transferContext);
+//        contextHandlerCollection.addHandler(transferContext);
 		this.server.setHandler(contextHandlerCollection);
 	}
 	

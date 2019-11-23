@@ -2,8 +2,10 @@ package com.challenge.action.executor;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.challenge.data.model.Transaction;
+
 public interface IRequestExecutor {
 	
-	String executeRequest(HttpServletRequest request);
+	Transaction executeRequest(HttpServletRequest request);
 
 }

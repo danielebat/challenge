@@ -6,6 +6,7 @@ import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.action.executor.account.AccountCreateRequestExecutor;
 import com.challenge.action.executor.account.AccountDeleteRequestExecutor;
 import com.challenge.action.executor.account.AccountDepositRequestExecutor;
+import com.challenge.action.executor.account.AccountTransferRequestExecutor;
 import com.challenge.action.executor.account.AccountWithdrawRequestExecutor;
 
 public class AccountRequestExecutorFactory {
@@ -14,14 +15,17 @@ public class AccountRequestExecutorFactory {
 	private final AccountDeleteRequestExecutor deleteExec;
 	private final AccountDepositRequestExecutor depositExec;
 	private final AccountWithdrawRequestExecutor withdrawExec;
+	private final AccountTransferRequestExecutor transferExec;
 	
 	@Inject
 	public AccountRequestExecutorFactory(AccountCreateRequestExecutor createExec, AccountDeleteRequestExecutor deleteExec,
-			AccountDepositRequestExecutor depositExec, AccountWithdrawRequestExecutor withdrawExec) {
+			AccountDepositRequestExecutor depositExec, AccountWithdrawRequestExecutor withdrawExec,
+			AccountTransferRequestExecutor transferExec) {
 				this.createExec = createExec;
 				this.deleteExec = deleteExec;
 				this.depositExec = depositExec;
 				this.withdrawExec = withdrawExec;
+				this.transferExec = transferExec;
 	}
 
 	public IRequestExecutor create(AccountAction action) {
@@ -33,6 +37,8 @@ public class AccountRequestExecutorFactory {
 			return depositExec;
 		else if (AccountAction.WITHDRAW.equals(action))
 			return withdrawExec;
+		else if (AccountAction.TRANSFER.equals(action))
+			return transferExec;
 		return null;
 	}
 }

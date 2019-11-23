@@ -7,35 +7,47 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
+import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
+import com.challenge.data.store.TransactionDao;
+import com.challenge.handler.account.AccountAction;
 
 public class AccountDeleteRequestExecutor implements IRequestExecutor {
 
 	private static final String ID = "id";
 	private final AccountDao dao;
+	private final TransactionDao transactionDao;
 	
 	@Inject
-	public AccountDeleteRequestExecutor(AccountDao dao) {
+	public AccountDeleteRequestExecutor(AccountDao dao, TransactionDao transactionDao) {
 		this.dao = dao;
+		this.transactionDao = transactionDao;
 	}
 	
-	public String executeRequest(HttpServletRequest request) {
+	public Transaction executeRequest(HttpServletRequest request) {
+		
+		String message = "Unable to process request for account";
 		
 		try {
 			String id = request.getParameter(ID);
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return "Unable to process delete request for account. Account not available.";
+				return new Transaction(null, null, null, null, "Unable to process delete request for account. Account not available.");
 			
 			if (account.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return "Unable to process delete request for account. Account amount is less than zero.";
+				return new Transaction(null, null, null, null, "Unable to process delete request for account. Account amount is less than zero.");
 			
 			dao.remove(Integer.valueOf(id));
 			
-			return "Account delete successfully.";
+			message = "Account delete successfully.";
+			
+			Transaction transaction = new Transaction(AccountAction.DELETE, Integer.valueOf(id), null, null, message);
+			transactionDao.add(transaction);
+			
+			return transaction;
 		} catch (Exception e) {
-			return "Unable to process request for account";
+			return new Transaction(null, null, null, null, message);
 		}
 		
 	}

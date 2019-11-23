@@ -8,20 +8,27 @@ import javax.servlet.http.HttpServletRequest;
 import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
+import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
+import com.challenge.data.store.TransactionDao;
+import com.challenge.handler.account.AccountAction;
 
 public class AccountCreateRequestExecutor implements IRequestExecutor {
 
 	private static final String CURRENCY = "currency";
 	private static final String AMOUNT = "amount";
 	private final AccountDao dao;
+	private final TransactionDao transactionDao;
 	
 	@Inject
-	public AccountCreateRequestExecutor(AccountDao dao) {
+	public AccountCreateRequestExecutor(AccountDao dao, TransactionDao transactionDao) {
 		this.dao = dao;
+		this.transactionDao = transactionDao;
 	}
 	
-	public String executeRequest(HttpServletRequest request) {
+	public Transaction executeRequest(HttpServletRequest request) {
+		
+		String message = "Unable to process request for account";
 		
 		try {
 			String amount = request.getParameter(AMOUNT);
@@ -30,12 +37,16 @@ public class AccountCreateRequestExecutor implements IRequestExecutor {
 			BigDecimal accountAmount = new BigDecimal(amount);
 			
 			Account account = new Account(accountAmount, Currency.valueOf(currency.toUpperCase()));
-			
 			Integer id = dao.add(account);
 			
-			return "Account created successfully. IBAN: " + account.getIbanCode() +"|"+ String.valueOf(id);
+			message = "Account created successfully. IBAN: " + account.getIbanCode() +".";
+			
+			Transaction transaction = new Transaction(AccountAction.CREATE, id, null, accountAmount, message);
+			transactionDao.add(transaction);
+			
+			return transaction;
 		} catch (Exception e) {
-			return "Unable to process request for account";
+			return new Transaction(null, null, null, null, message);
 		}
 		
 	}

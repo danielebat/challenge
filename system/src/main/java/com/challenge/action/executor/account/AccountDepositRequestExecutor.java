@@ -7,20 +7,27 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
+import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
+import com.challenge.data.store.TransactionDao;
+import com.challenge.handler.account.AccountAction;
 
 public class AccountDepositRequestExecutor implements IRequestExecutor {
 
 	private static final String ID = "id";
 	private static final String AMOUNT = "amount";
 	private final AccountDao dao;
+	private TransactionDao transactionDao;
 	
 	@Inject
-	public AccountDepositRequestExecutor(AccountDao dao) {
+	public AccountDepositRequestExecutor(AccountDao dao, TransactionDao transactionDao) {
 		this.dao = dao;
+		this.transactionDao = transactionDao;
 	}
 	
-	public String executeRequest(HttpServletRequest request) {
+	public Transaction executeRequest(HttpServletRequest request) {
+		
+		String message = "Unable to process request for account";
 		
 		try {
 			String id = request.getParameter(ID);
@@ -30,13 +37,18 @@ public class AccountDepositRequestExecutor implements IRequestExecutor {
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return "Unable to process request for account. Account not available";
+				return new Transaction(null, null, null, null, "Unable to process request for account. Account not available");
 			
 			BigDecimal updatedAmount = dao.deposit(account, depositAmount);
 			
-			return "Amount deposited successfully. Updated amount: " + updatedAmount;
+			message = "Amount deposited successfully. Updated amount: " + updatedAmount + ".";
+			
+			Transaction transaction = new Transaction(AccountAction.DEPOSIT, Integer.valueOf(id), null, depositAmount, message);
+			transactionDao.add(transaction);
+			
+			return transaction;
 		} catch (Exception e) {
-			return "Unable to process request for account";
+			return new Transaction(null, null, null, null, message);
 		}
 		
 	}
