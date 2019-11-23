@@ -7,9 +7,7 @@ public class Main
 {
     public static void main( String[] args )
     {
-        
     	Injector injector = Guice.createInjector(new ApplicationModule());
-        
-        injector.getInstance(WebServer.class);
+        injector.getInstance(WebServer.class).startServer();
     }
 }
