@@ -12,7 +12,7 @@ public class AccountDao extends Dao<Account> {
 	}
 
 	@Override
-	protected Account findById(String ibanCode) {
+	public Account findById(String ibanCode) {
 		return this.entities.get(ibanCode);
 	}
 
