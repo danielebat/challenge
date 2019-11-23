@@ -6,14 +6,15 @@ import javax.inject.Singleton;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
-import com.challenge.account.action.executor.AccountCreateRequestExecutor;
-import com.challenge.account.action.executor.AccountDeleteRequestExecutor;
-import com.challenge.account.action.executor.AccountDepositRequestExecutor;
-import com.challenge.account.action.executor.AccountWithdrawRequestExecutor;
-import com.challenge.account.handler.AccountHandler;
-import com.challenge.account.handler.AccountRequestExecutorFactory;
+import com.challenge.action.executor.account.AccountCreateRequestExecutor;
+import com.challenge.action.executor.account.AccountDeleteRequestExecutor;
+import com.challenge.action.executor.account.AccountDepositRequestExecutor;
+import com.challenge.action.executor.account.AccountWithdrawRequestExecutor;
 import com.challenge.data.store.AccountDao;
+import com.challenge.handler.account.AccountHandler;
+import com.challenge.handler.account.AccountRequestExecutorFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -53,6 +54,12 @@ public class ApplicationModule extends AbstractModule {
 	@Named(WEBSERVER)
 	public ContextHandler getContextHandler() {
 		return new ContextHandler();
+	}
+	
+	@Provides
+	@Named(WEBSERVER)
+	public ContextHandlerCollection getContextHandlerCollection() {
+		return new ContextHandlerCollection();
 	}
 
 }

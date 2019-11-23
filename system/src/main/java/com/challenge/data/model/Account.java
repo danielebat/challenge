@@ -2,7 +2,7 @@ package com.challenge.data.model;
 
 import java.math.BigDecimal;
 
-import com.challenge.account.util.AccountUtil;
+import com.challenge.util.account.AccountUtil;
 
 public class Account {
 	

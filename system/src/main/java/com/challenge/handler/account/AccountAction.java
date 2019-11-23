@@ -1,4 +1,4 @@
-package com.challenge.account.handler;
+package com.challenge.handler.account;
 
 public enum AccountAction {
 	CREATE,

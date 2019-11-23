@@ -1,12 +1,12 @@
-package com.challenge.account.handler;
+package com.challenge.handler.account;
 
 import javax.inject.Inject;
 
-import com.challenge.account.action.executor.AccountCreateRequestExecutor;
-import com.challenge.account.action.executor.AccountDeleteRequestExecutor;
-import com.challenge.account.action.executor.AccountDepositRequestExecutor;
-import com.challenge.account.action.executor.AccountWithdrawRequestExecutor;
-import com.challenge.account.action.executor.IAccountRequestExecutor;
+import com.challenge.action.executor.account.AccountCreateRequestExecutor;
+import com.challenge.action.executor.account.AccountDeleteRequestExecutor;
+import com.challenge.action.executor.account.AccountDepositRequestExecutor;
+import com.challenge.action.executor.account.AccountWithdrawRequestExecutor;
+import com.challenge.action.executor.account.IAccountRequestExecutor;
 
 public class AccountRequestExecutorFactory {
 	

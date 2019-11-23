@@ -1,4 +1,4 @@
-package com.challenge.account.action.executor;
+package com.challenge.action.executor.account;
 
 import javax.servlet.http.HttpServletRequest;
 

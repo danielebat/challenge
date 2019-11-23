@@ -1,4 +1,4 @@
-package com.challenge.account.handler;
+package com.challenge.handler.account;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import com.challenge.account.action.executor.IAccountRequestExecutor;
+import com.challenge.action.executor.account.IAccountRequestExecutor;
 import com.challenge.data.store.AccountDao;
 
 public class AccountHandler extends AbstractHandler {

@@ -1,4 +1,4 @@
-package com.challenge.account.util;
+package com.challenge.util.account;
 
 import java.util.Random;
 
