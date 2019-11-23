@@ -11,20 +11,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
+import com.challenge.account.action.executor.IAccountRequestExecutor;
 import com.challenge.data.store.AccountDao;
 
 public class AccountHandler extends AbstractHandler {
 	
 	private final AccountDao dao;
+	private final AccountRequestExecutorFactory factory;
 	
 	@Inject
-	public AccountHandler(AccountDao dao) {
+	public AccountHandler(AccountDao dao, AccountRequestExecutorFactory factory) {
 		this.dao = dao;
+		this.factory = factory;
 	}
 
 	@Override
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
+		
+		String responseStr = "Unable to process request for account.";
 		
 		System.out.println("---");
 		System.out.println(target);
@@ -35,16 +40,33 @@ public class AccountHandler extends AbstractHandler {
 		System.out.println("---");
 		System.out.println(response);
 		
-		response.setContentType("text/plain; charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-
-        PrintWriter out = response.getWriter();
-
-        out.println("pippoPluto");
-
-        baseRequest.setHandled(true);
+		IAccountRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
+		if(actionExecutor != null)
+			responseStr = actionExecutor.executeRequest(request);
+		
+		buildHttpResponse(response, baseRequest, responseStr);
 			
 
 	}
+
+	private void buildHttpResponse(HttpServletResponse response, Request baseRequest,
+			String responseStr) {
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+//			handle exception
+		}
+
+		out.println(responseStr);
+		baseRequest.setHandled(true);
+	}
+
+	
 
 }
