@@ -4,7 +4,5 @@ public enum Currency {
 	EUR,
 	USD,
 	GBP,
-	JPY,
-	CHF,
-	AUD
+	JPY
 }

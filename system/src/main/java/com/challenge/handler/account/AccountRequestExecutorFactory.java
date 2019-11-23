@@ -2,11 +2,11 @@ package com.challenge.handler.account;
 
 import javax.inject.Inject;
 
+import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.action.executor.account.AccountCreateRequestExecutor;
 import com.challenge.action.executor.account.AccountDeleteRequestExecutor;
 import com.challenge.action.executor.account.AccountDepositRequestExecutor;
 import com.challenge.action.executor.account.AccountWithdrawRequestExecutor;
-import com.challenge.action.executor.account.IAccountRequestExecutor;
 
 public class AccountRequestExecutorFactory {
 	
@@ -24,7 +24,7 @@ public class AccountRequestExecutorFactory {
 				this.withdrawExec = withdrawExec;
 	}
 
-	public IAccountRequestExecutor create(AccountAction action) {
+	public IRequestExecutor create(AccountAction action) {
 		if (AccountAction.CREATE.equals(action))
 			return createExec;
 		else if (AccountAction.DELETE.equals(action))

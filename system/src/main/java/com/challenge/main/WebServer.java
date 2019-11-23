@@ -10,6 +10,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import com.challenge.handler.account.AccountHandler;
+import com.challenge.handler.transfer.TransferHandler;
 
 public class WebServer {
 	
@@ -25,7 +26,7 @@ public class WebServer {
 			@Named(ApplicationModule.WEBSERVER) ServerConnector connector,
 			@Named(ApplicationModule.WEBSERVER) Provider<ContextHandler> contextHandlerProvider,
 			@Named(ApplicationModule.WEBSERVER) ContextHandlerCollection contextHandlerCollection,
-			AccountHandler accountHandler, TransferHandler transferHAndler) {
+			AccountHandler accountHandler, TransferHandler transferHandler) {
 		
 		this.server = server;
 		
@@ -44,7 +45,7 @@ public class WebServer {
         
         contextHandlerCollection.addHandler(accountContext);
         contextHandlerCollection.addHandler(transferContext);
-		this.server.setHandlers(contextHandlerCollection);
+		this.server.setHandler(contextHandlerCollection);
 	}
 	
 	protected void startServer() {

@@ -14,21 +14,21 @@ public abstract class Dao<T> {
 		this.id = 0;
 	}
 	
-	public Collection<T> findAll() {
+	public synchronized Collection<T> findAll() {
 		return entities.values();
 	}
 	
-	public Integer add(T entity) {
+	public synchronized Integer add(T entity) {
 		id++;
 		entities.put(id, entity);
 		return id;
 	}
 	
-	public T findById(Integer id) {
+	public synchronized T findById(Integer id) {
 		return entities.get(id);
 	}
 	
-	public T remove(Integer id) {
+	public synchronized T remove(Integer id) {
 		return entities.remove(id);
 	}
 

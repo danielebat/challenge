@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.store.AccountDao;
 
-public class AccountDepositRequestExecutor implements IAccountRequestExecutor {
+public class AccountDepositRequestExecutor implements IRequestExecutor {
 
 	private static final String ID = "id";
 	private static final String AMOUNT = "amount";

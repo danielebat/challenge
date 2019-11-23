@@ -13,13 +13,13 @@ public class AccountDao extends Dao<Account> {
 		super();
 	}
 	
-	public BigDecimal deposit(Account account, BigDecimal amount) {
+	public synchronized BigDecimal deposit(Account account, BigDecimal amount) {
 		BigDecimal updatedAmount = account.getAmount().add(amount);
 		account.setAmount(updatedAmount);
 		return updatedAmount;
 	}
 	
-	public BigDecimal withdraw(Account account, BigDecimal amount) {
+	public synchronized BigDecimal withdraw(Account account, BigDecimal amount) {
 		BigDecimal updatedAmount = account.getAmount().subtract(amount);
 		account.setAmount(updatedAmount);
 		return updatedAmount;

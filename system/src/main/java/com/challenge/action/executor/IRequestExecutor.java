@@ -1,8 +1,8 @@
-package com.challenge.action.executor.account;
+package com.challenge.action.executor;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface IAccountRequestExecutor {
+public interface IRequestExecutor {
 	
 	String executeRequest(HttpServletRequest request);
 

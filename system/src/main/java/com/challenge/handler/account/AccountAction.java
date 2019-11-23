@@ -4,5 +4,6 @@ public enum AccountAction {
 	CREATE,
 	DELETE,
 	DEPOSIT,
-	WITHDRAW
+	WITHDRAW,
+	TRANSFER
 }

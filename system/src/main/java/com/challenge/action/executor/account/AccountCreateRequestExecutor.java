@@ -5,11 +5,12 @@ import java.math.BigDecimal;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
 import com.challenge.data.store.AccountDao;
 
-public class AccountCreateRequestExecutor implements IAccountRequestExecutor {
+public class AccountCreateRequestExecutor implements IRequestExecutor {
 
 	private static final String CURRENCY = "currency";
 	private static final String AMOUNT = "amount";

@@ -1,4 +1,4 @@
-package com.challenge.handler.account;
+package com.challenge.handler.transfer;
 
 import java.io.IOException;
 
@@ -9,16 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
 
-import com.challenge.action.executor.IRequestExecutor;
+import com.challenge.action.executor.account.TransferRequestExecutor;
 import com.challenge.handler.ActionHandler;
 
-public class AccountHandler extends ActionHandler {
+public class TransferHandler extends ActionHandler {
 	
-	private final AccountRequestExecutorFactory factory;
-	
+	private final TransferRequestExecutor transferExecutor;
+
 	@Inject
-	public AccountHandler(AccountRequestExecutorFactory factory) {
-		this.factory = factory;
+	public TransferHandler(TransferRequestExecutor transferExecutor) {
+		this.transferExecutor = transferExecutor;
 	}
 
 	@Override
@@ -27,9 +27,7 @@ public class AccountHandler extends ActionHandler {
 		
 		String responseStr = "Unable to process request for account.";
 		
-		IRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
-		if(actionExecutor != null)
-			responseStr = actionExecutor.executeRequest(request);
+		responseStr = transferExecutor.executeRequest(request);
 		
 		buildHttpResponse(response, baseRequest, HttpServletResponse.SC_OK, responseStr);
 	}
