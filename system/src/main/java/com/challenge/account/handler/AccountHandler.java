@@ -29,14 +29,14 @@ public class AccountHandler extends AbstractHandler {
 		
 		String responseStr = "Unable to process request for account.";
 		
-		System.out.println("---");
-		System.out.println(target);
-		System.out.println("---");
-		System.out.println(baseRequest);
-		System.out.println("---");
-		System.out.println(request);
-		System.out.println("---");
-		System.out.println(response);
+//		System.out.println("---");
+//		System.out.println(target);
+//		System.out.println("---");
+//		System.out.println(baseRequest);
+//		System.out.println("---");
+//		System.out.println(request);
+//		System.out.println("---");
+//		System.out.println(response);
 		
 		IAccountRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
 		if(actionExecutor != null)
