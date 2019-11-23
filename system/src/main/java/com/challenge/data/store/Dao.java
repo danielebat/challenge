@@ -6,16 +6,30 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Dao<T> {
 	
-	protected Map<String, T> entities;
+	protected Map<Integer, T> entities;
+	private Integer id;
 	
 	public Dao() {
-		this.entities = new ConcurrentHashMap<String, T>();
+		this.entities = new ConcurrentHashMap<Integer, T>();
+		this.id = 0;
 	}
 	
-	protected Collection<T> findAll() {
+	public Collection<T> findAll() {
 		return entities.values();
 	}
 	
-	protected abstract T findById(String id);
+	public Integer add(T entity) {
+		id++;
+		entities.put(id, entity);
+		return id;
+	}
+	
+	public T findById(Integer id) {
+		return entities.get(id);
+	}
+	
+	public T remove(Integer id) {
+		return entities.remove(id);
+	}
 
 }

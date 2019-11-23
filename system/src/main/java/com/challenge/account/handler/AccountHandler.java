@@ -16,12 +16,10 @@ import com.challenge.data.store.AccountDao;
 
 public class AccountHandler extends AbstractHandler {
 	
-	private final AccountDao dao;
 	private final AccountRequestExecutorFactory factory;
 	
 	@Inject
-	public AccountHandler(AccountDao dao, AccountRequestExecutorFactory factory) {
-		this.dao = dao;
+	public AccountHandler(AccountRequestExecutorFactory factory) {
 		this.factory = factory;
 	}
 

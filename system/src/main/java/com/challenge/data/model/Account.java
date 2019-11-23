@@ -2,14 +2,16 @@ package com.challenge.data.model;
 
 import java.math.BigDecimal;
 
+import com.challenge.account.util.AccountUtil;
+
 public class Account {
 	
 	private String ibanCode;
 	private BigDecimal amount;
 	private Currency currency;
 	
-	public Account(String ibanCode, BigDecimal amount, Currency currency) {
-		this.ibanCode = ibanCode;
+	public Account(BigDecimal amount, Currency currency) {
+		this.ibanCode = AccountUtil.generateIbanCode(currency);
 		this.amount = amount;
 		this.currency = currency;
 	}

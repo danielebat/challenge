@@ -11,9 +11,4 @@ public class AccountDao extends Dao<Account> {
 		super();
 	}
 
-	@Override
-	public Account findById(String ibanCode) {
-		return this.entities.get(ibanCode);
-	}
-
 }
