@@ -29,7 +29,7 @@ public class TransactionHandler extends ActionHandler {
 			throws IOException, ServletException {
 		
 		List<IJsonObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
-		if (TransactionAction.LIST.equals(target.substring(1).toUpperCase()))
+		if (TransactionAction.LIST.equals(TransactionAction.valueOf(target.substring(1).toUpperCase())))
 			jsonObjects = listExec.executeRequest(request);
 		
 		buildHttpResponse(response, baseRequest, jsonObjects);
