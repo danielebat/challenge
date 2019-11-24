@@ -1,4 +1,4 @@
-package com.challenge.handler.account;
+package com.challenge.handler.transaction;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jetty.server.Request;
 
-import com.challenge.action.executor.IRequestExecutor;
+import com.challenge.action.executor.transaction.TransactionListRequestExecutor;
 import com.challenge.data.model.IJsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
 import com.google.common.collect.Lists;
 
-public class AccountHandler extends ActionHandler {
-	
-	private final AccountRequestExecutorFactory factory;
+public class TransactionHandler extends ActionHandler {
+
+	private final TransactionListRequestExecutor listExec;
 	
 	@Inject
-	public AccountHandler(AccountRequestExecutorFactory factory) {
-		this.factory = factory;
+	public TransactionHandler(TransactionListRequestExecutor listExec) {
+		this.listExec = listExec;
 	}
 
 	@Override
@@ -31,9 +31,8 @@ public class AccountHandler extends ActionHandler {
 		
 		List<IJsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, "Unable to process request."));
 		
-		IRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
-		if(actionExecutor != null)
-			jsonObjects = actionExecutor.executeRequest(request);
+		if (TransactionAction.LIST.equals(target.substring(1).toUpperCase()))
+			jsonObjects = listExec.executeRequest(request);
 		
 		buildHttpResponse(response, baseRequest, jsonObjects);
 	}
