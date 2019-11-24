@@ -26,17 +26,17 @@ public class AccountDeleteRequestExecutor implements IRequestExecutor {
 	
 	public Transaction executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account";
+		String message = "Unable to process request for account.";
 		
 		try {
 			String id = request.getParameter(ID);
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return new Transaction(null, null, null, null, "Unable to process delete request for account. Account not available.");
+				return new Transaction(null, null, null, null, message + " Account not available.");
 			
 			if (account.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return new Transaction(null, null, null, null, "Unable to process delete request for account. Account amount is less than zero.");
+				return new Transaction(null, null, null, null, message + " Account amount is less than zero.");
 			
 			dao.remove(Integer.valueOf(id));
 			

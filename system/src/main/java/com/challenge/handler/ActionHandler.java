@@ -13,12 +13,12 @@ import com.google.gson.JsonObject;
 
 public abstract class ActionHandler extends AbstractHandler {
 
-	public void buildHttpResponse(HttpServletResponse response, Request baseRequest,
-			int code, Transaction transaction) {
+	public void buildHttpResponse(HttpServletResponse response, Request baseRequest, Transaction transaction) {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.setStatus(code);
+		response.setStatus((transaction.getId() == null) ? 
+				HttpServletResponse.SC_INTERNAL_SERVER_ERROR : HttpServletResponse.SC_OK);
 		
 		JsonObject message = new JsonObject();
 		message.addProperty("transactionId", transaction.getId());

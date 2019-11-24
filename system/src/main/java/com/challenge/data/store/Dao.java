@@ -1,6 +1,5 @@
 package com.challenge.data.store;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,10 +11,6 @@ public abstract class Dao<T> {
 	public Dao() {
 		this.entities = new ConcurrentHashMap<Integer, T>();
 		this.id = 0;
-	}
-	
-	public synchronized Collection<T> findAll() {
-		return entities.values();
 	}
 	
 	public synchronized Integer add(T entity) {

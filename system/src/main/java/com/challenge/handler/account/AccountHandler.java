@@ -32,7 +32,7 @@ public class AccountHandler extends ActionHandler {
 		if(actionExecutor != null)
 			transaction = actionExecutor.executeRequest(request);
 		
-		buildHttpResponse(response, baseRequest, HttpServletResponse.SC_OK, transaction);
+		buildHttpResponse(response, baseRequest, transaction);
 	}
 
 }

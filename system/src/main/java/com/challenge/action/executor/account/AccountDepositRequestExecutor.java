@@ -27,7 +27,7 @@ public class AccountDepositRequestExecutor implements IRequestExecutor {
 	
 	public Transaction executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account";
+		String message = "Unable to process request for account.";
 		
 		try {
 			String id = request.getParameter(ID);
@@ -37,7 +37,7 @@ public class AccountDepositRequestExecutor implements IRequestExecutor {
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return new Transaction(null, null, null, null, "Unable to process request for account. Account not available");
+				return new Transaction(null, null, null, null, message + " Account not available");
 			
 			BigDecimal updatedAmount = dao.deposit(account, depositAmount);
 			

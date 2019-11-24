@@ -29,7 +29,7 @@ public class AccountTransferRequestExecutor implements IRequestExecutor {
 	
 	public Transaction executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account";
+		String message = "Unable to process request for account.";
 		
 		try {
 			String from = request.getParameter(FROM);
@@ -41,19 +41,19 @@ public class AccountTransferRequestExecutor implements IRequestExecutor {
 			Account accountFrom = dao.findById(Integer.valueOf(from));
 			Account accountTo = dao.findById(Integer.valueOf(to));
 			if (accountFrom == null)
-				return new Transaction(null, null, null, null, "Unable to process request for account. Source Account not available");
+				return new Transaction(null, null, null, null, message + " Source Account not available");
 			
 			if (accountTo == null)
-				return new Transaction(null, null, null, null, "Unable to process request for account. Target Account not available");
+				return new Transaction(null, null, null, null, message + " Target Account not available");
 			
 			if (accountFrom.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return new Transaction(null, null, null, null, "Unable to process delete request for account. Source account amount is less than zero.");
+				return new Transaction(null, null, null, null, message + ". Source account amount is less than zero.");
 			
 			if (accountFrom.getAmount().compareTo(amountToTransfer) < 0)
-				return new Transaction(null, null, null, null, "Unable to process delete request for account. Source account amount is lower than transfer amount.");
+				return new Transaction(null, null, null, null, message + " Source account amount is lower than transfer amount.");
 			
 			if (accountFrom == accountTo)
-				return new Transaction(null, null, null, null, "Unable to process request for account. Source and Target Account are equal.");
+				return new Transaction(null, null, null, null, message + " Source and Target Account are equal.");
 			
 			dao.withdraw(accountFrom, amountToTransfer);
 			BigDecimal convertedAmount = TransferUtil.convert(amountToTransfer, accountFrom.getCurrency(), accountTo.getCurrency());

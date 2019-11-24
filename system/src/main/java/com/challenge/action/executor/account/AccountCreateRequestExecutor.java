@@ -15,6 +15,7 @@ import com.challenge.handler.account.AccountAction;
 
 public class AccountCreateRequestExecutor implements IRequestExecutor {
 
+	private static final String USER_ID = "userId";
 	private static final String CURRENCY = "currency";
 	private static final String AMOUNT = "amount";
 	private final AccountDao dao;
@@ -28,15 +29,17 @@ public class AccountCreateRequestExecutor implements IRequestExecutor {
 	
 	public Transaction executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account";
+		String message = "Unable to process request for account.";
 		
 		try {
 			String amount = request.getParameter(AMOUNT);
 			String currency = request.getParameter(CURRENCY);
+			String userId = request.getParameter(USER_ID);
 			
 			BigDecimal accountAmount = new BigDecimal(amount);
 			
-			Account account = new Account(accountAmount, Currency.valueOf(currency.toUpperCase()));
+			Account account = new Account(accountAmount, 
+					Currency.valueOf(currency.toUpperCase()), Integer.valueOf(userId));
 			Integer id = dao.add(account);
 			
 			message = "Account created successfully. IBAN: " + account.getIbanCode() +".";
