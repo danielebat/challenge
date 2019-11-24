@@ -58,5 +58,9 @@ public class WebServer {
 			server.destroy();
 		}
 	}
+	
+	public Server getServer() {
+		return server;
+	}
 
 }

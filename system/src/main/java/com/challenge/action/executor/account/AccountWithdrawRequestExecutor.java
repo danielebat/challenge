@@ -50,7 +50,7 @@ public class AccountWithdrawRequestExecutor extends AbstractRequestExecutor {
 			BigDecimal updatedAmount = dao.withdraw(account, amountToWithdraw);
 			
 			Transaction transaction = new Transaction(AccountAction.WITHDRAW, Integer.valueOf(id), null,
-					amountToWithdraw, "Amount withdrawn successfully. Updated amount: " + updatedAmount);
+					amountToWithdraw, "Amount withdrawn successfully - Updated amount: " + updatedAmount);
 			transactionDao.add(transaction);
 			
 			return generateResponseMessage(false, StringUtils.EMPTY, transaction);

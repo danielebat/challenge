@@ -18,7 +18,8 @@ public abstract class ActionHandler extends AbstractHandler {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.setStatus(HttpServletResponse.SC_OK);
+		response.setStatus((jsonObjects.get(0).getId() == null) ? HttpServletResponse.SC_INTERNAL_SERVER_ERROR :
+			HttpServletResponse.SC_OK);
 		
 		String jsonString = new Gson().toJson(jsonObjects);
 
