@@ -49,10 +49,10 @@ public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 				return generateResponseMessage(true, "Target Account not available", null);
 			
 			if (accountFrom.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return generateResponseMessage(true, "Source account amount is less than zero", null);
+				return generateResponseMessage(true, "Source Account amount is less than zero", null);
 			
 			if (accountFrom.getAmount().compareTo(amountToTransfer) < 0)
-				return generateResponseMessage(true, "Source account amount is lower than transfer amount", null);
+				return generateResponseMessage(true, "Source Account amount is lower than amount to transfer", null);
 			
 			if (accountFrom == accountTo)
 				return generateResponseMessage(true, "Source and Target Account are equal", null);
