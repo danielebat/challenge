@@ -1,7 +1,7 @@
 package com.challenge.data.store;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.challenge.data.model.IJsonObject;
 
@@ -11,7 +11,7 @@ public class Dao<T extends IJsonObject> {
 	private Integer id;
 	
 	public Dao() {
-		this.entities = new ConcurrentHashMap<Integer, T>();
+		this.entities = new HashMap<Integer, T>();
 		this.id = 0;
 	}
 	
