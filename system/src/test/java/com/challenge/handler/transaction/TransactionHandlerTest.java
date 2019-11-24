@@ -6,15 +6,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.challenge.action.executor.transaction.TransactionListRequestExecutor;
+import com.challenge.data.model.Transaction;
+import com.challenge.handler.account.AccountAction;
 import com.google.common.collect.Lists;
 
 public class TransactionHandlerTest {
@@ -27,6 +31,7 @@ public class TransactionHandlerTest {
 	HttpServletResponse httpResponse;
 	
 	PrintWriter writer;
+	Transaction tr;
 	
 	@Before
 	public void setup() {
@@ -39,6 +44,8 @@ public class TransactionHandlerTest {
 		
 		executor = mock(TransactionListRequestExecutor.class);
 		handler = new TransactionHandler(executor);
+		
+		tr = new Transaction(AccountAction.CREATE, 1, null, new BigDecimal(300), StringUtils.EMPTY);
 	}
 	
 	@Test
@@ -46,7 +53,8 @@ public class TransactionHandlerTest {
 		
 		when(httpResponse.getWriter()).thenReturn(writer);
 		
-		when(executor.executeRequest(httpRequest)).thenReturn(Lists.newArrayList());
+		tr.setId(1);
+		when(executor.executeRequest(httpRequest)).thenReturn(Lists.newArrayList(tr));
 		
 		handler.handle("/list", request, httpRequest, httpResponse);
 		
@@ -58,7 +66,8 @@ public class TransactionHandlerTest {
 		
 		when(httpResponse.getWriter()).thenReturn(writer);
 		
-		when(executor.executeRequest(httpRequest)).thenReturn(Lists.newArrayList());
+		tr.setId(null);
+		when(executor.generateResponseMessage(true, StringUtils.EMPTY, null)).thenReturn(Lists.newArrayList(tr));
 		
 		handler.handle("list", request, httpRequest, httpResponse);
 		

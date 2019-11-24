@@ -49,7 +49,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		List<IJsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertReturnedTransaction(trList, transactionDao, AccountAction.WITHDRAW,
-				new BigDecimal(500), "Amount withdrawn successfully. Updated amount: 500",
+				new BigDecimal(500), "Amount withdrawn successfully - Updated amount: 500",
 				new Integer(53), null);
 	}
 	

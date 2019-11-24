@@ -7,15 +7,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
+import com.challenge.data.model.Transaction;
 import com.google.common.collect.Lists;
 
 public class AccountHandlerTest {
@@ -29,6 +32,7 @@ public class AccountHandlerTest {
 	HttpServletResponse httpResponse;
 	
 	PrintWriter writer;
+	Transaction tr;
 	
 	@Before
 	public void setup() {
@@ -42,6 +46,9 @@ public class AccountHandlerTest {
 		executor = mock(AbstractRequestExecutor.class);
 		factory = mock(AccountRequestExecutorFactory.class);
 		handler = new AccountHandler(factory);
+		
+		tr = new Transaction(AccountAction.CREATE, 1, null, new BigDecimal(300), StringUtils.EMPTY);
+		tr.setId(1);
 	}
 	
 	@Test
@@ -50,7 +57,8 @@ public class AccountHandlerTest {
 		when(httpResponse.getWriter()).thenReturn(writer);
 		
 		when(factory.create(any(AccountAction.class))).thenReturn(executor);
-		when(executor.executeRequest(httpRequest)).thenReturn(Lists.newArrayList());
+		
+		when(executor.executeRequest(httpRequest)).thenReturn(Lists.newArrayList(tr));
 		
 		handler.handle("/list", request, httpRequest, httpResponse);
 		
