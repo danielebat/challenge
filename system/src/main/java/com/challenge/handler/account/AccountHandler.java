@@ -8,12 +8,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
+import com.google.common.collect.Lists;
 
 public class AccountHandler extends ActionHandler {
 	
@@ -28,8 +29,14 @@ public class AccountHandler extends ActionHandler {
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		AbstractRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
-		List<IJsonObject> jsonObjects = actionExecutor.generateResponseMessage(true, StringUtils.EMPTY, null);
+		AccountAction action;
+		try {
+			action = AccountAction.valueOf(target.substring(1).toUpperCase());
+		} catch (IllegalArgumentException e) {
+			action = null;
+		}
+		AbstractRequestExecutor actionExecutor = factory.create(action);
+		List<IJsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, AbstractRequestExecutor.ERROR_MESSAGE));
 		if(actionExecutor != null)
 			jsonObjects = actionExecutor.executeRequest(request);
 		

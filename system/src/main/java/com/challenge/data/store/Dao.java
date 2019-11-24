@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.challenge.data.model.IJsonObject;
 
-public abstract class Dao<T extends IJsonObject> {
+public class Dao<T extends IJsonObject> {
 	
 	protected Map<Integer, T> entities;
 	private Integer id;

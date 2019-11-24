@@ -1,4 +1,4 @@
-package com.challenge.action.executor.account;
+package com.challenge.action.executor.transaction;
 
 import static org.mockito.Mockito.mock;
 
@@ -9,20 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.challenge.action.executor.account.RequestExecutorTest;
 import com.challenge.data.model.IJsonObject;
-import com.challenge.data.store.AccountDao;
+import com.challenge.data.store.TransactionDao;
 import com.google.common.collect.Lists;
 
-public class AccountListResourceExtractorTest extends RequestExecutorTest {
+public class TransactionListRequestExecutorTest extends RequestExecutorTest {
 	
-	AccountListRequestExecutor executor;
-	private AccountDao dao;
+	TransactionListRequestExecutor executor;
+	private TransactionDao dao;
 	private HttpServletRequest request;
 	
 	@Before
 	public void setup() {
-		dao = mock(AccountDao.class);
-		executor = new AccountListRequestExecutor(dao);
+		dao = mock(TransactionDao.class);
+		executor = new TransactionListRequestExecutor(dao);
 	}
 	
 	@Test

@@ -24,7 +24,7 @@ import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 import com.google.common.collect.Lists;
 
-public class AccountCreateRequestExecutorTest extends AccountRequestExecutorTest {
+public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 	
 	AccountCreateRequestExecutor executor;
 	private AccountDao dao;

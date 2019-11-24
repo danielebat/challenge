@@ -20,7 +20,7 @@ import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 import com.google.common.collect.Lists;
 
-public class AccountDeleteRequestExecutorTest extends AccountRequestExecutorTest {
+public class AccountDeleteRequestExecutorTest extends RequestExecutorTest {
 	
 	AccountDeleteRequestExecutor executor;
 	private AccountDao dao;

@@ -14,7 +14,7 @@ import com.challenge.data.model.Transaction;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 
-public class AccountRequestExecutorTest {
+public class RequestExecutorTest {
 	
 	public void mockRequestBehaviour(HttpServletRequest request, List<String> paramValueList) {
 		for (int i = 0; i < paramValueList.size(); i+=2) {

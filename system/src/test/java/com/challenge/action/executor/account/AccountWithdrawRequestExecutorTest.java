@@ -20,7 +20,7 @@ import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 import com.google.common.collect.Lists;
 
-public class AccountWithdrawRequestExecutorTest extends AccountRequestExecutorTest {
+public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 
 	AccountWithdrawRequestExecutor executor;
 	private AccountDao dao;

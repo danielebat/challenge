@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 
 public abstract class AbstractRequestExecutor {
 	
-	private final static String ERROR_MESSAGE = "Unable to process request";
+	public final static String ERROR_MESSAGE = "Unable to process request";
 	
 	public abstract List<IJsonObject> executeRequest(HttpServletRequest request);
 	
