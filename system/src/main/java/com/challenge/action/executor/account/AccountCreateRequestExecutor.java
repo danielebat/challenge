@@ -6,7 +6,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.action.executor.IRequestExecutor;
+import org.apache.commons.lang3.StringUtils;
+
+import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
 import com.challenge.data.model.IJsonObject;
@@ -14,9 +16,8 @@ import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
-import com.google.common.collect.Lists;
 
-public class AccountCreateRequestExecutor implements IRequestExecutor {
+public class AccountCreateRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String USER_ID = "userId";
 	private static final String CURRENCY = "currency";
@@ -32,8 +33,6 @@ public class AccountCreateRequestExecutor implements IRequestExecutor {
 	
 	public List<IJsonObject> executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account.";
-		
 		try {
 			String amount = request.getParameter(AMOUNT);
 			String currency = request.getParameter(CURRENCY);
@@ -45,14 +44,13 @@ public class AccountCreateRequestExecutor implements IRequestExecutor {
 					Currency.valueOf(currency.toUpperCase()), Integer.valueOf(userId));
 			Integer id = dao.add(account);
 			
-			message = "Account created successfully. IBAN: " + account.getIbanCode() +".";
-			
-			Transaction transaction = new Transaction(AccountAction.CREATE, id, null, accountAmount, message);
+			Transaction transaction = new Transaction(AccountAction.CREATE, id, null,
+					accountAmount, "Account created successfully. IBAN: " + account.getIbanCode());
 			transactionDao.add(transaction);
 			
-			return Lists.newArrayList(transaction);
+			return generateResponseMessage(false, StringUtils.EMPTY, transaction);
 		} catch (Exception e) {
-			return Lists.newArrayList(new Transaction(null, null, null, null, message));
+			return generateResponseMessage(true, StringUtils.EMPTY, null);
 		}
 		
 	}

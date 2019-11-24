@@ -6,7 +6,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.action.executor.IRequestExecutor;
+import org.apache.commons.lang3.StringUtils;
+
+import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.IJsonObject;
 import com.challenge.data.model.Transaction;
@@ -14,9 +16,8 @@ import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 import com.challenge.util.transfer.TransferUtil;
-import com.google.common.collect.Lists;
 
-public class AccountTransferRequestExecutor implements IRequestExecutor {
+public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String FROM = "from";
 	private static final String TO = "to";
@@ -32,8 +33,6 @@ public class AccountTransferRequestExecutor implements IRequestExecutor {
 	
 	public List<IJsonObject> executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account.";
-		
 		try {
 			String from = request.getParameter(FROM);
 			String to = request.getParameter(TO);
@@ -44,32 +43,31 @@ public class AccountTransferRequestExecutor implements IRequestExecutor {
 			Account accountFrom = dao.findById(Integer.valueOf(from));
 			Account accountTo = dao.findById(Integer.valueOf(to));
 			if (accountFrom == null)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Source Account not available"));
+				return generateResponseMessage(true, "Source Account not available", null);
 			
 			if (accountTo == null)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Target Account not available"));
+				return generateResponseMessage(true, "Target Account not available", null);
 			
 			if (accountFrom.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + ". Source account amount is less than zero."));
+				return generateResponseMessage(true, "Source account amount is less than zero", null);
 			
 			if (accountFrom.getAmount().compareTo(amountToTransfer) < 0)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Source account amount is lower than transfer amount."));
+				return generateResponseMessage(true, "Source account amount is lower than transfer amount", null);
 			
 			if (accountFrom == accountTo)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Source and Target Account are equal."));
+				return generateResponseMessage(true, "Source and Target Account are equal", null);
 			
 			dao.withdraw(accountFrom, amountToTransfer);
 			BigDecimal convertedAmount = TransferUtil.convert(amountToTransfer, accountFrom.getCurrency(), accountTo.getCurrency());
 			dao.deposit(accountTo, convertedAmount);
 			
-			message = "Amount transferred successfully.";
-			
-			Transaction transaction = new Transaction(AccountAction.TRANSFER, Integer.valueOf(from), Integer.valueOf(to), amountToTransfer, message);
+			Transaction transaction = new Transaction(AccountAction.TRANSFER, Integer.valueOf(from),
+					Integer.valueOf(to), amountToTransfer, "Amount transferred successfully");
 			transactionDao.add(transaction);
 			
-			return Lists.newArrayList(transaction);
+			return generateResponseMessage(false, StringUtils.EMPTY, transaction);
 		} catch (Exception e) {
-			return Lists.newArrayList(new Transaction(null, null, null, null, message));
+			return generateResponseMessage(true, StringUtils.EMPTY, null);
 		}
 		
 	}

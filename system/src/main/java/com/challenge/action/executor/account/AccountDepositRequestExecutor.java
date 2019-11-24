@@ -6,16 +6,17 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.action.executor.IRequestExecutor;
+import org.apache.commons.lang3.StringUtils;
+
+import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.IJsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
-import com.google.common.collect.Lists;
 
-public class AccountDepositRequestExecutor implements IRequestExecutor {
+public class AccountDepositRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String ID = "id";
 	private static final String AMOUNT = "amount";
@@ -30,8 +31,6 @@ public class AccountDepositRequestExecutor implements IRequestExecutor {
 	
 	public List<IJsonObject> executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account.";
-		
 		try {
 			String id = request.getParameter(ID);
 			String amount = request.getParameter(AMOUNT);
@@ -40,18 +39,17 @@ public class AccountDepositRequestExecutor implements IRequestExecutor {
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Account not available"));
+				return generateResponseMessage(true, "Account not available", null);
 			
 			BigDecimal updatedAmount = dao.deposit(account, depositAmount);
 			
-			message = "Amount deposited successfully. Updated amount: " + updatedAmount + ".";
-			
-			Transaction transaction = new Transaction(AccountAction.DEPOSIT, Integer.valueOf(id), null, depositAmount, message);
+			Transaction transaction = new Transaction(AccountAction.DEPOSIT, Integer.valueOf(id), null, 
+					depositAmount, "Amount deposited successfully - Updated amount: " + updatedAmount);
 			transactionDao.add(transaction);
 			
-			return Lists.newArrayList(transaction);
+			return generateResponseMessage(false, StringUtils.EMPTY, transaction);
 		} catch (Exception e) {
-			return Lists.newArrayList(new Transaction(null, null, null, null, message));
+			return generateResponseMessage(true, StringUtils.EMPTY, null);
 		}
 		
 	}

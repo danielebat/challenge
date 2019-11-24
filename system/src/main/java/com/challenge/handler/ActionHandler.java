@@ -26,7 +26,7 @@ public abstract class ActionHandler extends AbstractHandler {
 		try {
 			out = response.getWriter();
 		} catch (IOException e) {
-//			handle exception
+			System.err.println("Unable to create HTTP response.");
 		}
 
 		out.println(jsonString);

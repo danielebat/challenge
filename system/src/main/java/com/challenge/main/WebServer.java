@@ -53,7 +53,7 @@ public class WebServer {
 			server.start();
 			server.join();
 		} catch (Exception e) {
-//			handle exception
+			System.err.println("Unable to start web server. Exiting...");
 		} finally {
 			server.destroy();
 		}

@@ -5,13 +5,14 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.action.executor.IRequestExecutor;
+import org.apache.commons.lang3.StringUtils;
+
+import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.IJsonObject;
-import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.google.common.collect.Lists;
 
-public class AccountListRequestExecutor implements IRequestExecutor {
+public class AccountListRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String USER_ID = "id";
 	private final AccountDao accountDao;
@@ -23,13 +24,11 @@ public class AccountListRequestExecutor implements IRequestExecutor {
 	
 	public List<IJsonObject> executeRequest(HttpServletRequest request) {
 		
-		String message = "Unable to process request for account.";
-		
 		try {
 			String userId = request.getParameter(USER_ID);
 			return Lists.newArrayList(accountDao.findAllByUserId(Integer.valueOf(userId)));
 		} catch (Exception e) {
-			return Lists.newArrayList(new Transaction(null, null, null, null, message));
+			return generateResponseMessage(true, StringUtils.EMPTY, null);
 		}
 		
 	}

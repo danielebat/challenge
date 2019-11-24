@@ -8,13 +8,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.transaction.TransactionListRequestExecutor;
 import com.challenge.data.model.IJsonObject;
-import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
-import com.google.common.collect.Lists;
 
 public class TransactionHandler extends ActionHandler {
 
@@ -29,8 +28,7 @@ public class TransactionHandler extends ActionHandler {
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		List<IJsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, "Unable to process request."));
-		
+		List<IJsonObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
 		if (TransactionAction.LIST.equals(target.substring(1).toUpperCase()))
 			jsonObjects = listExec.executeRequest(request);
 		
