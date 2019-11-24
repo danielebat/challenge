@@ -93,6 +93,20 @@ public class AcceptanceTest {
     }
 	
 	@Test
+    public void testAccountDeleteGivingErrorIfAccountDoesNotExist() throws Exception {
+        
+        builder.clearParameters();
+        URI uri = builder.setPath("/account/delete")
+        		.addParameter("id", "4354635")
+        		.build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+
+        assertEquals("Unable to process request - Account not available", tr.getMessage());
+    }
+	
+	@Test
     public void testAccountDeposit() throws Exception {
         
 		builder.clearParameters();

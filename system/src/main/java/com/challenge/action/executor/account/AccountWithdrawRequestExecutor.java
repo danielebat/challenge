@@ -37,12 +37,12 @@ public class AccountWithdrawRequestExecutor extends AbstractRequestExecutor {
 			
 			BigDecimal amountToWithdraw = new BigDecimal(amount);
 			
+			if (amountToWithdraw.compareTo(BigDecimal.ZERO) < 0)
+				return generateResponseMessage(true, "Amount is less than zero", null);
+			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
 				return generateResponseMessage(true, "Account not available", null);
-			
-			if (account.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return generateResponseMessage(true, "Account amount is less than zero", null);
 			
 			if (account.getAmount().compareTo(amountToWithdraw) < 0)
 				return generateResponseMessage(true, "Account amount is lower than withdrawal", null);

@@ -1,6 +1,5 @@
 package com.challenge.action.executor.account;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,9 +35,6 @@ public class AccountDeleteRequestExecutor extends AbstractRequestExecutor {
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
 				return generateResponseMessage(true, "Account not available", null);
-			
-			if (account.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return generateResponseMessage(true, "Account amount is less than zero", null);
 			
 			dao.remove(Integer.valueOf(id));
 			

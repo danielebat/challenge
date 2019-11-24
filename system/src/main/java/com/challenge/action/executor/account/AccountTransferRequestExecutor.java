@@ -40,6 +40,9 @@ public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 			
 			BigDecimal amountToTransfer = new BigDecimal(amount);
 			
+			if (amountToTransfer.compareTo(BigDecimal.ZERO) < 0)
+				return generateResponseMessage(true, "Amount is less than zero", null);
+			
 			Account accountFrom = dao.findById(Integer.valueOf(from));
 			Account accountTo = dao.findById(Integer.valueOf(to));
 			if (accountFrom == null)
@@ -47,9 +50,6 @@ public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 			
 			if (accountTo == null)
 				return generateResponseMessage(true, "Target Account not available", null);
-			
-			if (accountFrom.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return generateResponseMessage(true, "Source Account amount is less than zero", null);
 			
 			if (accountFrom.getAmount().compareTo(amountToTransfer) < 0)
 				return generateResponseMessage(true, "Source Account amount is lower than amount to transfer", null);

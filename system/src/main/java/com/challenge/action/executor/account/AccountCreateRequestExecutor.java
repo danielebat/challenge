@@ -40,6 +40,9 @@ public class AccountCreateRequestExecutor extends AbstractRequestExecutor {
 			
 			BigDecimal accountAmount = new BigDecimal(amount);
 			
+			if (accountAmount.compareTo(BigDecimal.ZERO) < 0)
+				return generateResponseMessage(true, "Amount is less than zero", null);
+			
 			Account account = new Account(accountAmount, 
 					Currency.valueOf(currency.toUpperCase()), Integer.valueOf(userId));
 			Integer id = dao.add(account);

@@ -86,5 +86,17 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		assertJsonObjectWithErrorMessage(trList, "Account not available");
 	}
 	
+	@Test
+	public void testGivenNegativeAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
+		
+		request = mock(HttpServletRequest.class);
+		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "-1000"));
+		
+		List<IJsonObject> trList = executor.executeRequest(request);
+		
+		assertEquals(1, trList.size());
+		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");
+	}
+	
 	
 }

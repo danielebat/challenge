@@ -119,26 +119,6 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 	}
 	
 	@Test
-	public void testGivenNegativeFromAccountAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
-		
-		request = mock(HttpServletRequest.class);
-		mockRequestBehaviour(request, Lists.newArrayList("amount", "300", "from", "53", "to", "54"));
-		
-		Account accountFrom = new Account(new BigDecimal(-1000), Currency.EUR, 3);
-		accountFrom.setId(53);
-		when(dao.findById(53)).thenReturn(accountFrom);
-		
-		Account accountTo = new Account(new BigDecimal(1000), Currency.EUR, 3);
-		accountFrom.setId(54);
-		when(dao.findById(54)).thenReturn(accountTo);
-		
-		List<IJsonObject> trList = executor.executeRequest(request);
-		
-		assertEquals(1, trList.size());
-		assertJsonObjectWithErrorMessage(trList, "Source Account amount is less than zero");
-	}
-	
-	@Test
 	public void testGivenAmountToTransferGreaterThanAccountAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
 		
 		request = mock(HttpServletRequest.class);
@@ -172,6 +152,18 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Source and Target Account are equal");
+	}
+	
+	@Test
+	public void testGivenNegativeAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
+		
+		request = mock(HttpServletRequest.class);
+		mockRequestBehaviour(request, Lists.newArrayList("amount", "-300", "from", "53", "to", "55"));
+		
+		List<IJsonObject> trList = executor.executeRequest(request);
+		
+		assertEquals(1, trList.size());
+		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");
 	}
 
 }

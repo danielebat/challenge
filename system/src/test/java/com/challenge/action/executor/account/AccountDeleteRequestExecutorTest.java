@@ -76,22 +76,5 @@ public class AccountDeleteRequestExecutorTest extends RequestExecutorTest {
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account not available");
 	}
-	
-	@Test
-	public void testGivenNegativeAccountAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
-		
-		request = mock(HttpServletRequest.class);
-		mockRequestBehaviour(request, Lists.newArrayList("id", "53"));
-		
-		Account account = new Account(new BigDecimal(-1000), Currency.EUR, 3);
-		account.setId(53);
-		
-		when(dao.findById(53)).thenReturn(account);
-		
-		List<IJsonObject> trList = executor.executeRequest(request);
-		
-		assertEquals(1, trList.size());
-		assertJsonObjectWithErrorMessage(trList, "Account amount is less than zero");
-	}
 
 }

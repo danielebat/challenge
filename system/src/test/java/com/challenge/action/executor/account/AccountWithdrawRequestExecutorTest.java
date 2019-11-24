@@ -87,23 +87,6 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 	}
 	
 	@Test
-	public void testGivenNegativeAccountAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
-		
-		request = mock(HttpServletRequest.class);
-		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "500"));
-		
-		Account account = new Account(new BigDecimal(-1000), Currency.EUR, 3);
-		account.setId(53);
-		
-		when(dao.findById(53)).thenReturn(account);
-		
-		List<IJsonObject> trList = executor.executeRequest(request);
-		
-		assertEquals(1, trList.size());
-		assertJsonObjectWithErrorMessage(trList, "Account amount is less than zero");
-	}
-	
-	@Test
 	public void testGivenWithdrawalAmountGreaterThanAccountAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
 		
 		request = mock(HttpServletRequest.class);
@@ -118,5 +101,17 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account amount is lower than withdrawal");
+	}
+	
+	@Test
+	public void testGivenNegativeAmountWhenExecutingRequestThenTransactionWithErrorMessageIsReturned() {
+		
+		request = mock(HttpServletRequest.class);
+		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "-1000"));
+		
+		List<IJsonObject> trList = executor.executeRequest(request);
+		
+		assertEquals(1, trList.size());
+		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");
 	}
 }

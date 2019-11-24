@@ -37,6 +37,9 @@ public class AccountDepositRequestExecutor extends AbstractRequestExecutor {
 			
 			BigDecimal depositAmount = new BigDecimal(amount);
 			
+			if (depositAmount.compareTo(BigDecimal.ZERO) < 0)
+				return generateResponseMessage(true, "Amount is less than zero", null);
+			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
 				return generateResponseMessage(true, "Account not available", null);
