@@ -28,8 +28,15 @@ public class TransactionHandler extends ActionHandler {
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
+		TransactionAction action;
+		try {
+			action = TransactionAction.valueOf(target.substring(1).toUpperCase());
+		} catch (IllegalArgumentException e) {
+			action = null;
+		}
+		
 		List<IJsonObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
-		if (TransactionAction.LIST.equals(TransactionAction.valueOf(target.substring(1).toUpperCase())))
+		if (TransactionAction.LIST.equals(action))
 			jsonObjects = listExec.executeRequest(request);
 		
 		buildHttpResponse(response, baseRequest, jsonObjects);
