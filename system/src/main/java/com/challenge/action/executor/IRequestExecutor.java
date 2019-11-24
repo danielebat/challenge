@@ -1,11 +1,13 @@
 package com.challenge.action.executor;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.data.model.Transaction;
+import com.challenge.data.model.IJsonObject;
 
 public interface IRequestExecutor {
 	
-	Transaction executeRequest(HttpServletRequest request);
+	List<IJsonObject> executeRequest(HttpServletRequest request);
 
 }

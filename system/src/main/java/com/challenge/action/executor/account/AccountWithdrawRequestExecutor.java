@@ -1,16 +1,19 @@
 package com.challenge.action.executor.account;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import com.challenge.action.executor.IRequestExecutor;
 import com.challenge.data.model.Account;
+import com.challenge.data.model.IJsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
+import com.google.common.collect.Lists;
 
 public class AccountWithdrawRequestExecutor implements IRequestExecutor {
 
@@ -25,7 +28,7 @@ public class AccountWithdrawRequestExecutor implements IRequestExecutor {
 		this.transactionDao = transactionDao;
 	}
 	
-	public Transaction executeRequest(HttpServletRequest request) {
+	public List<IJsonObject> executeRequest(HttpServletRequest request) {
 		
 		String message = "Unable to process request for account.";
 		
@@ -37,13 +40,13 @@ public class AccountWithdrawRequestExecutor implements IRequestExecutor {
 			
 			Account account = dao.findById(Integer.valueOf(id));
 			if (account == null)
-				return new Transaction(null, null, null, null, message + " Account not available");
+				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Account not available"));
 			
 			if (account.getAmount().compareTo(BigDecimal.ZERO) < 0)
-				return new Transaction(null, null, null, null, message + " Account amount is less than zero.");
+				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Account amount is less than zero."));
 			
 			if (account.getAmount().compareTo(amountToWithdraw) < 0)
-				return new Transaction(null, null, null, null, message + " Account amount is lower than withdrawal.");
+				return Lists.newArrayList(new Transaction(null, null, null, null, message + " Account amount is lower than withdrawal."));
 			
 			BigDecimal updatedAmount = dao.withdraw(account, amountToWithdraw);
 			
@@ -52,9 +55,9 @@ public class AccountWithdrawRequestExecutor implements IRequestExecutor {
 			Transaction transaction = new Transaction(AccountAction.WITHDRAW, Integer.valueOf(id), null, amountToWithdraw, message);
 			transactionDao.add(transaction);
 			
-			return transaction;
+			return Lists.newArrayList(transaction);
 		} catch (Exception e) {
-			return new Transaction(null, null, null, null, message);
+			return Lists.newArrayList(new Transaction(null, null, null, null, message));
 		}
 		
 	}

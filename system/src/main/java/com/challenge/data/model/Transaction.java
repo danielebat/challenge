@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.challenge.handler.account.AccountAction;
 
-public class Transaction {
+public class Transaction implements IJsonObject {
 	
 	Integer id;
 	AccountAction action;
@@ -42,12 +42,14 @@ public class Transaction {
 		return message;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
+	@Override
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Override
+	public Integer getId() {
+		return id;
 	}
 
 }

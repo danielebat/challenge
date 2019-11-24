@@ -1,6 +1,7 @@
 package com.challenge.handler.account;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -10,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.IRequestExecutor;
+import com.challenge.data.model.IJsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
+import com.google.common.collect.Lists;
 
 public class AccountHandler extends ActionHandler {
 	
@@ -26,13 +29,13 @@ public class AccountHandler extends ActionHandler {
 	public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 		
-		Transaction transaction = new Transaction(null, null, null, null, "Unable to process delete request for account.");
+		List<IJsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, "Unable to process delete request for account."));
 		
 		IRequestExecutor actionExecutor = factory.create(AccountAction.valueOf(target.substring(1).toUpperCase()));
 		if(actionExecutor != null)
-			transaction = actionExecutor.executeRequest(request);
+			jsonObjects = actionExecutor.executeRequest(request);
 		
-		buildHttpResponse(response, baseRequest, transaction);
+		buildHttpResponse(response, baseRequest, jsonObjects);
 	}
 
 }

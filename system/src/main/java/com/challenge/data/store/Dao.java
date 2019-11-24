@@ -3,7 +3,9 @@ package com.challenge.data.store;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class Dao<T> {
+import com.challenge.data.model.IJsonObject;
+
+public abstract class Dao<T extends IJsonObject> {
 	
 	protected Map<Integer, T> entities;
 	private Integer id;
@@ -15,6 +17,7 @@ public abstract class Dao<T> {
 	
 	public synchronized Integer add(T entity) {
 		id++;
+		entity.setId(id);
 		entities.put(id, entity);
 		return id;
 	}

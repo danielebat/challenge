@@ -2,11 +2,11 @@ package com.challenge.data.store;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import com.challenge.data.model.Account;
-import com.google.common.collect.Lists;
 
 public class AccountDao extends Dao<Account> {
 	
@@ -28,12 +28,10 @@ public class AccountDao extends Dao<Account> {
 	}
 	
 	public synchronized List<Account> findAllByUserId(Integer userId) {
-		List<Account> acccounts = Lists.newArrayList();
-		for (Account acccount : entities.values()) {
-			if (acccount.getUserId() == userId)
-				acccounts.add(acccount);
-		}
-		return acccounts;
+		return entities.values()
+				.stream()
+				.filter(account -> account.getUserId() == userId)
+				.collect(Collectors.toList());
 	}
 
 }
