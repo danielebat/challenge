@@ -70,6 +70,20 @@ public class AcceptanceTest {
     }
 	
 	@Test
+    public void testAccountCreateGivingErrorWhenAmountIsNegative() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "-1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
+    }
+	
+	@Test
     public void testAccountDelete() throws Exception {
 		
 		builder.clearParameters();
@@ -131,6 +145,42 @@ public class AcceptanceTest {
     }
 	
 	@Test
+    public void testAccountDepositGivingErrorWhenAmountIsNegative() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+        Transaction tr = list.get(0);
+        
+        builder.clearParameters();
+        uri = builder.setPath("/account/deposit")
+        		.addParameter("amount", "-200").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        tr = list.get(0);
+        
+        assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
+    }
+	
+	@Test
+    public void testAccountDepositGivingErrorWhenAccountDoesNotExist() throws Exception {
+		
+		builder.clearParameters();
+        URI uri = builder.setPath("/account/deposit")
+        		.addParameter("id", "4354635").addParameter("amount", "200")
+        		.build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+
+        assertEquals("Unable to process request - Account not available", tr.getMessage());
+    }
+	
+	@Test
     public void testAccountWithdraw() throws Exception {
         
 		builder.clearParameters();
@@ -151,6 +201,64 @@ public class AcceptanceTest {
         assertEquals(new BigDecimal(400), tr.getAmount());
         assertEquals(AccountAction.WITHDRAW, tr.getAction());
         assertEquals("Amount withdrawn successfully - Updated amount: 600", tr.getMessage());
+    }
+	
+	@Test
+    public void testAccountWithdrawGivingErrorWhenAmountIsNegative() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+        Transaction tr = list.get(0);
+        
+        builder.clearParameters();
+        uri = builder.setPath("/account/withdraw")
+        		.addParameter("amount", "-200").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        tr = list.get(0);
+        
+        assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
+    }
+	
+	@Test
+    public void testAccountWithdrawGivingErrorWhenAmountIsLessThanAccountAmount() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+        Transaction tr = list.get(0);
+        
+        builder.clearParameters();
+        uri = builder.setPath("/account/withdraw")
+        		.addParameter("amount", "2000").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        tr = list.get(0);
+        
+        assertEquals("Unable to process request - Account amount is lower than withdrawal", tr.getMessage());
+    }
+	
+	@Test
+    public void testAccountWithdrawGivingErrorWhenAccountDoesNotExist() throws Exception {
+		
+		builder.clearParameters();
+        URI uri = builder.setPath("/account/withdraw")
+        		.addParameter("id", "4354635").addParameter("amount", "200")
+        		.build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+
+        assertEquals("Unable to process request - Account not available", tr.getMessage());
     }
 	
 	@Test
@@ -187,6 +295,117 @@ public class AcceptanceTest {
         assertEquals(AccountAction.TRANSFER, tr.getAction());
         assertEquals("Amount transferred successfully", tr.getMessage());
     }
+	
+	@Test
+    public void testAccountTransferGivingErrorWhenFromAccountDoesNotExist() throws Exception {
+		
+		builder.clearParameters();
+        URI uri = builder.setPath("/account/transfer")
+        		.addParameter("amount", "400").addParameter("from", "435463645")
+        		.addParameter("to", "3").build();
+        
+        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Source Account not available", tr.getMessage());
+	}
+	
+	@Test
+    public void testAccountTransferGivingErrorWhenToAccountDoesNotExist() throws Exception {
+		
+		Integer fromAccountId;
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "3")
+        		.addParameter("currency", "EUR").build();
+        
+		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+		fromAccountId = list.get(0).getSourceAccountId();
+		
+		builder.clearParameters();
+        uri = builder.setPath("/account/transfer")
+        		.addParameter("amount", "400").addParameter("from", fromAccountId.toString())
+        		.addParameter("to", "3245672").build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Target Account not available", tr.getMessage());
+	}
+	
+	@Test
+    public void testAccountTransferGivingErrorWhenAmountToTransferIsLessThanFromAccount() throws Exception {
+		
+		Integer fromAccountId;
+		Integer toAccountId;
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "3")
+        		.addParameter("currency", "EUR").build();
+        
+		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+		fromAccountId = list.get(0).getSourceAccountId();
+		
+		builder.clearParameters();
+		uri = builder.setPath("/account/create")
+        		.addParameter("amount", "2000").addParameter("userId", "4")
+        		.addParameter("currency", "EUR").build();
+		
+		list = executeHttpRequestAndVerifyStatus(uri, 200);
+		toAccountId = list.get(0).getSourceAccountId();
+        
+        builder.clearParameters();
+        uri = builder.setPath("/account/transfer")
+        		.addParameter("amount", "2000").addParameter("from", fromAccountId.toString())
+        		.addParameter("to", toAccountId.toString()).build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Source Account amount is lower than amount to transfer", tr.getMessage());
+	}
+	
+	@Test
+    public void testAccountTransferGivingErrorWhenFromAccountIsEqualToToAccount() throws Exception {
+		
+		Integer fromAccountId;
+		Integer toAccountId;
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "3")
+        		.addParameter("currency", "EUR").build();
+        
+		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 200);
+		fromAccountId = list.get(0).getSourceAccountId();
+		toAccountId = list.get(0).getSourceAccountId();
+        
+        builder.clearParameters();
+        uri = builder.setPath("/account/transfer")
+        		.addParameter("amount", "200").addParameter("from", fromAccountId.toString())
+        		.addParameter("to", toAccountId.toString()).build();
+        
+        list = executeHttpRequestAndVerifyStatus(uri, 500);
+        Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Source and Target Account are equal", tr.getMessage());
+	}
+	
+	@Test
+    public void testAccountTransferGivingErrorWhenAmountIsNegative() throws Exception {
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "-1000").addParameter("userId", "3")
+        		.addParameter("currency", "EUR").build();
+        
+		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, 500);
+		Transaction tr = list.get(0);
+        
+        assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
+	}
 	
 	@AfterClass
     public static void teardown() throws Exception {
