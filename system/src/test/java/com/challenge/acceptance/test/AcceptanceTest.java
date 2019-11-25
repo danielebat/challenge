@@ -1,6 +1,7 @@
 package com.challenge.acceptance.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -411,6 +412,25 @@ public class AcceptanceTest {
 	}
 	
 	@Test
+    public void testAccountListReturningAtLeastOneElement() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+        executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		
+        builder.clearParameters();
+		uri = builder.setPath("/account/list")
+        		.addParameter("id", "1").build();
+        
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        
+        assertTrue(list.size() >= 1);
+	}
+	
+	@Test
     public void testAccountListReturningEmptyListIfUserIsNotAvailable() throws Exception {
         
 		builder.clearParameters();
@@ -420,6 +440,29 @@ public class AcceptanceTest {
 		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
         
         assertEquals(0, list.size());
+	}
+	
+	@Test
+    public void testTransactionListReturningExactlyOneElementWhenCreatingIt() throws Exception {
+		
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/create")
+        		.addParameter("amount", "1000").addParameter("userId", "1")
+        		.addParameter("currency", "EUR").build();
+        
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		
+        builder.clearParameters();
+		uri = builder.setPath("/account/list")
+        		.addParameter("id", ((Transaction) list.get(0)).getId().toString()).build();
+        
+		list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		Transaction tr = (Transaction) list.get(0);
+		
+		assertEquals(AccountAction.CREATE, tr.getAction());
+		assertEquals(new BigDecimal(1000), tr.getAmount());
+        
+        assertTrue(list.size() == 1);
 	}
 	
 	@Test
