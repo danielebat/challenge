@@ -8,6 +8,9 @@ import javax.inject.Inject;
 
 import com.challenge.data.model.Account;
 
+/**
+ * Class to store Account data and transactions
+ */
 public class AccountDao extends Dao<Account> {
 	
 	@Inject

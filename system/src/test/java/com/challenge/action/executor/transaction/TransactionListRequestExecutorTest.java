@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.challenge.action.executor.account.RequestExecutorTest;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.store.TransactionDao;
 import com.google.common.collect.Lists;
 
@@ -32,7 +32,7 @@ public class TransactionListRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList());
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 

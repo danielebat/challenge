@@ -12,9 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.transaction.TransactionListRequestExecutor;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.handler.ActionHandler;
 
+/**
+ * Class to handle Transaction HTTP request and process acccording to target value
+ */
 public class TransactionHandler extends ActionHandler {
 
 	private final TransactionListRequestExecutor listExec;
@@ -35,7 +38,7 @@ public class TransactionHandler extends ActionHandler {
 			action = null;
 		}
 		
-		List<IJsonObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
+		List<IdentityObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
 		if (TransactionAction.LIST.equals(action))
 			jsonObjects = listExec.executeRequest(request);
 		

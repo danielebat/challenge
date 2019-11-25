@@ -10,6 +10,9 @@ import com.challenge.action.executor.account.AccountListRequestExecutor;
 import com.challenge.action.executor.account.AccountTransferRequestExecutor;
 import com.challenge.action.executor.account.AccountWithdrawRequestExecutor;
 
+/**
+ * Factory to create the correct executor according to HTTP request
+ */
 public class AccountRequestExecutorFactory {
 	
 	private final AccountCreateRequestExecutor createExec;

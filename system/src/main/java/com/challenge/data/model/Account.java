@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 
 import com.challenge.util.account.AccountUtil;
 
-public class Account implements IJsonObject {
-	
-	private Integer id;
+/**
+ * Class representing the bank account of a user
+ */
+public class Account extends IdentityObject {
+
 	private String ibanCode;
 	private BigDecimal amount;
 	private Currency currency;
@@ -37,16 +39,6 @@ public class Account implements IJsonObject {
 
 	public Integer getUserId() {
 		return userId;
-	}
-
-	@Override
-	public Integer getId() {
-		return id;
-	}
-	
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 }

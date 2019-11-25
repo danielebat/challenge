@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
@@ -46,7 +46,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		when(dao.findById(53)).thenReturn(account);
 		when(dao.withdraw(account, new BigDecimal(500))).thenReturn(new BigDecimal(500));
 		
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertReturnedTransaction(trList, transactionDao, AccountAction.WITHDRAW,
 				new BigDecimal(500), "Amount withdrawn successfully - Updated amount: 500",
@@ -59,7 +59,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("amount", "500"));
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -69,7 +69,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("id", "53"));
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -81,7 +81,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(null);
 		
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account not available");
 	}
@@ -97,7 +97,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(account);
 		
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account amount is lower than withdrawal");
@@ -109,7 +109,7 @@ public class AccountWithdrawRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "-1000"));
 		
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");

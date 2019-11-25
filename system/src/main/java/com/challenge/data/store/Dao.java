@@ -3,9 +3,12 @@ package com.challenge.data.store;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 
-public class Dao<T extends IJsonObject> {
+/**
+ * SuperClass to handle common requests and store data
+ */
+public class Dao<T extends IdentityObject> {
 	
 	protected Map<Integer, T> entities;
 	private Integer id;

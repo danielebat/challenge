@@ -11,12 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 
+/**
+ * Class to process Account Create Request
+ */
 public class AccountCreateRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String USER_ID = "userId";
@@ -31,7 +34,7 @@ public class AccountCreateRequestExecutor extends AbstractRequestExecutor {
 		this.transactionDao = transactionDao;
 	}
 	
-	public List<IJsonObject> executeRequest(HttpServletRequest request) {
+	public List<IdentityObject> executeRequest(HttpServletRequest request) {
 		
 		try {
 			String amount = request.getParameter(AMOUNT);

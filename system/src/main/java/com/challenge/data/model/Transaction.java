@@ -4,22 +4,23 @@ import java.math.BigDecimal;
 
 import com.challenge.handler.account.AccountAction;
 
-public class Transaction implements IJsonObject {
-	
-	Integer id;
+/**
+ * Class used to represent a transaction that a user can request through a HTTP request
+ */
+public class Transaction extends JsonObject {
+
 	AccountAction action;
 	Integer sourceAccountId;
 	Integer targetAccountId;
 	BigDecimal amount;
-	String message;
 	
 	public Transaction(AccountAction action, Integer sourceAccountId,
 			Integer targetAccountId, BigDecimal amount, String message) {
+		super(message);
 		this.action = action;
 		this.sourceAccountId = sourceAccountId;
 		this.targetAccountId = targetAccountId;
 		this.amount = amount;
-		this.message = message;
 	}
 
 	public AccountAction getAction() {
@@ -36,20 +37,6 @@ public class Transaction implements IJsonObject {
 
 	public BigDecimal getAmount() {
 		return amount;
-	}
-	
-	public String getMessage() {
-		return message;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Override
-	public Integer getId() {
-		return id;
 	}
 
 }

@@ -21,6 +21,16 @@ public class WebServer {
 	private Server server;
 	private ServerConnector connector;
 	
+	/**
+	 * Method to instantiate Jetty WebServer, configure host and port, configure handlers to reply to HTTP requests
+	 * 
+	 * @param server Istance of Jetty Webserver
+	 * @param connector Jetty webserver connector
+	 * @param contextHandlerProvider Provider of Context Handlers
+	 * @param contextHandlerCollection Collection of handlers
+	 * @param accountHandler Handler which replies under context path /account HTTP requests
+	 * @param transactionHandler Handler which replies under context path /transaction HTTP requests
+	 */
 	@Inject
 	public WebServer(@Named(ApplicationModule.WEBSERVER) Server server,
 			@Named(ApplicationModule.WEBSERVER) ServerConnector connector,
@@ -48,6 +58,9 @@ public class WebServer {
 		this.server.setHandler(contextHandlerCollection);
 	}
 	
+	/**
+	 * Method to start Jetty Webserver
+	 */
 	protected void startServer() {
 		try {
 			server.start();
@@ -59,6 +72,13 @@ public class WebServer {
 		}
 	}
 	
+	
+	/**
+	 * IMPORTANT. THIS METHOD HAS NO REASON TO EXIST IN NORMAL APPLICATION. I HAVE PUT IT HERE JUST FOR THE SAKE OF
+	 * ACCEPTANCE TESTS AND TO HAVE A WAY OF STARTING WEB SERVER.
+	 * 
+	 * @return Jetty Webserver instance
+	 */
 	public Server getServer() {
 		return server;
 	}

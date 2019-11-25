@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.store.AccountDao;
 import com.google.common.collect.Lists;
 
@@ -31,7 +31,7 @@ public class AccountListResourceExtractorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList());
-		List<IJsonObject> trList = executor.executeRequest(request);
+		List<IdentityObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 

@@ -22,7 +22,10 @@ import com.challenge.handler.account.AccountRequestExecutorFactory;
 import com.challenge.handler.transaction.TransactionHandler;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-
+/**
+ * Class to define Guice bindings
+ *
+ */
 public class ApplicationModule extends AbstractModule {
 	
 	protected static final String WEBSERVER = "WEBSERVER";

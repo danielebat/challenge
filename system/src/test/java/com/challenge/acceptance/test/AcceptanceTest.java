@@ -23,6 +23,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.account.AccountAction;
 import com.challenge.main.ApplicationModule;
@@ -63,8 +64,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals(new BigDecimal(1000), tr.getAmount());
         assertEquals(AccountAction.CREATE, tr.getAction());
@@ -79,8 +80,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "-1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
     }
@@ -93,15 +94,15 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
         
         builder.clearParameters();
         uri = builder.setPath("/account/delete")
-        		.addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals(null, tr.getAmount());
         assertEquals(AccountAction.DELETE, tr.getAction());
@@ -116,8 +117,8 @@ public class AcceptanceTest {
         		.addParameter("id", "4354635")
         		.build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
     }
@@ -130,15 +131,15 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "2")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
         
         builder.clearParameters();
         uri = builder.setPath("/account/deposit")
-        		.addParameter("amount", "200").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("amount", "200").addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals(new BigDecimal(200), tr.getAmount());
         assertEquals(AccountAction.DEPOSIT, tr.getAction());
@@ -154,16 +155,16 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        Transaction tr = (Transaction) list.get(0);
         
         builder.clearParameters();
         uri = builder.setPath("/account/deposit")
-        		.addParameter("amount", "-200").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("amount", "-200").addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        tr = list.get(0);
+        tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
     }
@@ -176,8 +177,8 @@ public class AcceptanceTest {
         		.addParameter("id", "4354635").addParameter("amount", "200")
         		.build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
     }
@@ -190,15 +191,15 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
         
         builder.clearParameters();
         uri = builder.setPath("/account/withdraw")
-        		.addParameter("amount", "400").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("amount", "400").addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals(new BigDecimal(400), tr.getAmount());
         assertEquals(AccountAction.WITHDRAW, tr.getAction());
@@ -213,16 +214,16 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        Transaction tr = (Transaction) list.get(0);
         
         builder.clearParameters();
         uri = builder.setPath("/account/withdraw")
-        		.addParameter("amount", "-200").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("amount", "-200").addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        tr = list.get(0);
+        tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
     }
@@ -235,16 +236,16 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "1")
         		.addParameter("currency", "EUR").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        Transaction tr = (Transaction) list.get(0);
         
         builder.clearParameters();
         uri = builder.setPath("/account/withdraw")
-        		.addParameter("amount", "2000").addParameter("id", list.get(0).getSourceAccountId().toString())
+        		.addParameter("amount", "2000").addParameter("id", ((Transaction) list.get(0)).getSourceAccountId().toString())
         		.build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        tr = list.get(0);
+        tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Account amount is lower than withdrawal", tr.getMessage());
     }
@@ -257,8 +258,8 @@ public class AcceptanceTest {
         		.addParameter("id", "4354635").addParameter("amount", "200")
         		.build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
     }
@@ -274,8 +275,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		fromAccountId = list.get(0).getSourceAccountId();
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		builder.clearParameters();
 		uri = builder.setPath("/account/create")
@@ -283,7 +284,7 @@ public class AcceptanceTest {
         		.addParameter("currency", "EUR").build();
 		
 		list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		toAccountId = list.get(0).getSourceAccountId();
+		toAccountId = ((Transaction) list.get(0)).getSourceAccountId();
         
         builder.clearParameters();
         uri = builder.setPath("/account/transfer")
@@ -291,7 +292,7 @@ public class AcceptanceTest {
         		.addParameter("to", toAccountId.toString()).build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals(new BigDecimal(400), tr.getAmount());
         assertEquals(AccountAction.TRANSFER, tr.getAction());
@@ -306,8 +307,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "400").addParameter("from", "435463645")
         		.addParameter("to", "3").build();
         
-        List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Source Account not available", tr.getMessage());
 	}
@@ -322,8 +323,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		fromAccountId = list.get(0).getSourceAccountId();
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		builder.clearParameters();
         uri = builder.setPath("/account/transfer")
@@ -331,7 +332,7 @@ public class AcceptanceTest {
         		.addParameter("to", "3245672").build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Target Account not available", tr.getMessage());
 	}
@@ -347,8 +348,8 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		fromAccountId = list.get(0).getSourceAccountId();
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		builder.clearParameters();
 		uri = builder.setPath("/account/create")
@@ -356,7 +357,7 @@ public class AcceptanceTest {
         		.addParameter("currency", "EUR").build();
 		
 		list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		toAccountId = list.get(0).getSourceAccountId();
+		toAccountId = ((Transaction) list.get(0)).getSourceAccountId();
         
         builder.clearParameters();
         uri = builder.setPath("/account/transfer")
@@ -364,7 +365,7 @@ public class AcceptanceTest {
         		.addParameter("to", toAccountId.toString()).build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Source Account amount is lower than amount to transfer", tr.getMessage());
 	}
@@ -380,9 +381,9 @@ public class AcceptanceTest {
         		.addParameter("amount", "1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
-		fromAccountId = list.get(0).getSourceAccountId();
-		toAccountId = list.get(0).getSourceAccountId();
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
+		toAccountId = ((Transaction) list.get(0)).getSourceAccountId();
         
         builder.clearParameters();
         uri = builder.setPath("/account/transfer")
@@ -390,7 +391,7 @@ public class AcceptanceTest {
         		.addParameter("to", toAccountId.toString()).build();
         
         list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        Transaction tr = list.get(0);
+        Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Source and Target Account are equal", tr.getMessage());
 	}
@@ -403,10 +404,34 @@ public class AcceptanceTest {
         		.addParameter("amount", "-1000").addParameter("userId", "3")
         		.addParameter("currency", "EUR").build();
         
-		List<Transaction> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		Transaction tr = list.get(0);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
+	}
+	
+	@Test
+    public void testAccountListReturningEmptyListIfUserIsNotAvailable() throws Exception {
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/account/list")
+        		.addParameter("id", "8686").build();
+        
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        
+        assertEquals(0, list.size());
+	}
+	
+	@Test
+    public void testTransactionListReturningEmptyListIfAccountIsNotAvailable() throws Exception {
+        
+		builder.clearParameters();
+		URI uri = builder.setPath("/transaction/list")
+        		.addParameter("id", "8686").build();
+        
+		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
+        
+        assertEquals(0, list.size());
 	}
 	
 	@AfterClass
@@ -414,7 +439,7 @@ public class AcceptanceTest {
 		server.getServer().stop();
     }
 
-	private List<Transaction> executeHttpRequestAndVerifyStatus(URI uri, int status) throws IOException, ClientProtocolException {
+	private List<JsonObject> executeHttpRequestAndVerifyStatus(URI uri, int status) throws IOException, ClientProtocolException {
 		HttpPost request = new HttpPost(uri);
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
@@ -423,7 +448,7 @@ public class AcceptanceTest {
         String jsonString = EntityUtils.toString(response.getEntity());
         
         Type returnListType = new TypeToken<ArrayList<Transaction>>(){}.getType();
-        List<Transaction> list = new Gson().fromJson(jsonString, returnListType);
+        List<JsonObject> list = new Gson().fromJson(jsonString, returnListType);
 		return list;
 	}
 

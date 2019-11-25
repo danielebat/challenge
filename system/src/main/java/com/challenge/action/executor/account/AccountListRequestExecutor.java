@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.store.AccountDao;
 import com.google.common.collect.Lists;
 
+/**
+ * Class to process Account List Request
+ */
 public class AccountListRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String USER_ID = "id";
@@ -22,7 +25,7 @@ public class AccountListRequestExecutor extends AbstractRequestExecutor {
 		this.accountDao = accountDao;
 	}
 	
-	public List<IJsonObject> executeRequest(HttpServletRequest request) {
+	public List<IdentityObject> executeRequest(HttpServletRequest request) {
 		
 		try {
 			String userId = request.getParameter(USER_ID);

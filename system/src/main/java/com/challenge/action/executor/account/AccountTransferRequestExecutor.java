@@ -10,13 +10,16 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
 import com.challenge.util.transfer.TransferUtil;
 
+/**
+ * Class to process Account Amount Transfer Request
+ */
 public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 
 	private static final String FROM = "from";
@@ -31,7 +34,7 @@ public class AccountTransferRequestExecutor extends AbstractRequestExecutor {
 		this.transactionDao = transactionDao;
 	}
 	
-	public List<IJsonObject> executeRequest(HttpServletRequest request) {
+	public List<IdentityObject> executeRequest(HttpServletRequest request) {
 		
 		try {
 			String from = request.getParameter(FROM);

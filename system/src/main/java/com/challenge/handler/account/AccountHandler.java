@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
-import com.challenge.data.model.IJsonObject;
+import com.challenge.data.model.IdentityObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
 import com.google.common.collect.Lists;
 
+/**
+ * Class to handle Account HTTP request and process acccording to target value
+ */
 public class AccountHandler extends ActionHandler {
 	
 	private final AccountRequestExecutorFactory factory;
@@ -36,7 +39,7 @@ public class AccountHandler extends ActionHandler {
 			action = null;
 		}
 		AbstractRequestExecutor actionExecutor = factory.create(action);
-		List<IJsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, AbstractRequestExecutor.ERROR_MESSAGE));
+		List<IdentityObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, AbstractRequestExecutor.ERROR_MESSAGE));
 		if(actionExecutor != null)
 			jsonObjects = actionExecutor.executeRequest(request);
 		

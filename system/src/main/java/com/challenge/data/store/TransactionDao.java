@@ -7,6 +7,9 @@ import javax.inject.Inject;
 
 import com.challenge.data.model.Transaction;
 
+/**
+ * Class to store transaction data
+ */
 public class TransactionDao extends Dao<Transaction> {
 	
 	@Inject

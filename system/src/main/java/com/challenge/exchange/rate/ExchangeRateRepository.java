@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.challenge.data.model.Currency;
 
+/**
+ * Class working as static repository of exchange rates
+ */
 public class ExchangeRateRepository {
 	
 	private static Map<String, BigDecimal> exchangeRateMap;
@@ -30,6 +33,12 @@ public class ExchangeRateRepository {
 		exchangeRateMap.put(Currency.JPY.name() + Currency.USD.name(), new BigDecimal(0.0092));
 	}
 	
+	/**
+	 * Method to get the exchange rate between two currencies
+	 * @param from Source Currency
+	 * @param to Target Currency
+	 * @return Exchange Rate
+	 */
 	public static BigDecimal getExchangeRate(Currency from, Currency to) {
 		if (from.equals(to))
 			return new BigDecimal(1.00);
