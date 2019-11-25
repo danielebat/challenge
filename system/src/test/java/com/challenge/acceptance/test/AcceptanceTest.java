@@ -453,7 +453,7 @@ public class AcceptanceTest {
 		List<JsonObject> list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
 		
         builder.clearParameters();
-		uri = builder.setPath("/account/list")
+		uri = builder.setPath("/transaction/list")
         		.addParameter("id", ((Transaction) list.get(0)).getId().toString()).build();
         
 		list = executeHttpRequestAndVerifyStatus(uri, HttpServletResponse.SC_OK);
