@@ -20,7 +20,7 @@ public class ExchangeRateRepository {
 		exchangeRateMap.put(Currency.USD.name() + Currency.GBP.name(), new BigDecimal(1.14));
 		exchangeRateMap.put(Currency.USD.name() + Currency.JPY.name(), new BigDecimal(108.64));
 		
-		exchangeRateMap.put(Currency.EUR.name() + Currency.USD.name(), new BigDecimal(0.96));
+		exchangeRateMap.put(Currency.EUR.name() + Currency.USD.name(), new BigDecimal(0.8));
 		exchangeRateMap.put(Currency.EUR.name() + Currency.GBP.name(), new BigDecimal(0.92));
 		exchangeRateMap.put(Currency.EUR.name() + Currency.JPY.name(), new BigDecimal(115.55));
 		
