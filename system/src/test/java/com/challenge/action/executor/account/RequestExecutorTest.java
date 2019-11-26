@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.challenge.data.model.IdentityObject;
 import com.challenge.data.model.JsonObject;
+import com.challenge.data.model.MessageObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
@@ -23,16 +23,16 @@ public class RequestExecutorTest {
 		}
 	}
 	
-	public void assertJsonObjectWithErrorMessage(List<IdentityObject> trList, String optionalMsg) {
+	public void assertJsonObjectWithErrorMessage(List<JsonObject> trList, String optionalMsg) {
 		assertEquals(1, trList.size());
-		JsonObject tr = (JsonObject) trList.get(0);
+		MessageObject tr = (MessageObject) trList.get(0);
 		String message = "Unable to process request";
 		if (optionalMsg != null)
 			message = message + " - " + optionalMsg;
 		assertEquals(message, tr.getMessage());
 	}
 	
-	public void assertReturnedTransaction(List<IdentityObject> trList, TransactionDao dao,
+	public void assertReturnedTransaction(List<JsonObject> trList, TransactionDao dao,
 			AccountAction action, BigDecimal amount, String message, Integer sourceAccountId, Integer targetAccountId) {
 		Transaction tr = (Transaction) trList.get(0);
 		

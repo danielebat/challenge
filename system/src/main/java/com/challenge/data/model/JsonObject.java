@@ -1,18 +1,18 @@
 package com.challenge.data.model;
 
 /**
- * Class to represent an object to be put into HTTP Response
+ * Class representing a json object that has a unique ID to be put in HTTP Request
  */
-public class JsonObject extends IdentityObject {
+public class JsonObject {
 	
-	private String message;
+	private Integer id;
 	
-	public JsonObject(String message) {
-		this.message = message;
+	public Integer getId() {
+		return id;
 	}
 	
-	public String getMessage() {
-		return message;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

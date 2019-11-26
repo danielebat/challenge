@@ -17,7 +17,7 @@ import org.mockito.ArgumentCaptor;
 
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
@@ -47,7 +47,7 @@ public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 		ArgumentCaptor<Account> captor = ArgumentCaptor.forClass(Account.class);
 		when(dao.add(captor.capture())).thenReturn(1);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		Account acc = captor.getValue();
 		
@@ -73,7 +73,7 @@ public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("userId", "53", "currency", "EUR"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -83,7 +83,7 @@ public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("amount", "1000", "currency", "EUR"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 		
@@ -93,7 +93,7 @@ public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("amount", "1000", "userId", "53"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -103,7 +103,7 @@ public class AccountCreateRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "-1000"));
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");

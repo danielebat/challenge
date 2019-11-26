@@ -8,18 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 
 public class DaoTest {
 	
-	Dao<IdentityObject> dao;
-	IdentityObject jsonObject;
+	Dao<JsonObject> dao;
+	JsonObject jsonObject;
 	
 	@Before
 	public void setup() {
 		
-		dao = new Dao<IdentityObject>();
-		jsonObject = mock(IdentityObject.class);
+		dao = new Dao<JsonObject>();
+		jsonObject = mock(JsonObject.class);
 	}
 	
 	@Test

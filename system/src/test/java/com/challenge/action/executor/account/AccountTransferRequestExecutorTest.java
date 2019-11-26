@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
@@ -49,7 +49,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		accountFrom.setId(54);
 		when(dao.findById(54)).thenReturn(accountTo);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		verify(dao).withdraw(accountFrom, new BigDecimal(300));
 		verify(dao).deposit(accountTo, new BigDecimal(300));
@@ -67,7 +67,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("from", "53", "to", "54"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -77,7 +77,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("from", "53", "amount", "300"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -87,7 +87,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("to", "54", "amount", "300"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -99,7 +99,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(null);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Source Account not available");
 	}
@@ -113,7 +113,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		when(dao.findById(53)).thenReturn(new Account(new BigDecimal(1000), Currency.EUR, 53));
 		when(dao.findById(54)).thenReturn(null);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Target Account not available");
 	}
@@ -132,7 +132,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		accountFrom.setId(54);
 		when(dao.findById(54)).thenReturn(accountTo);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Source Account amount is lower than amount to transfer");
@@ -148,7 +148,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		accountFrom.setId(53);
 		when(dao.findById(53)).thenReturn(accountFrom).thenReturn(accountFrom);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Source and Target Account are equal");
@@ -160,7 +160,7 @@ public class AccountTransferRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		mockRequestBehaviour(request, Lists.newArrayList("amount", "-300", "from", "53", "to", "55"));
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");

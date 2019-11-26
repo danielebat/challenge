@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.store.TransactionDao;
 import com.google.common.collect.Lists;
 
@@ -25,7 +25,7 @@ public class TransactionListRequestExecutor extends AbstractRequestExecutor {
 		this.transactionDao = transactionDao;
 	}
 	
-	public List<IdentityObject> executeRequest(HttpServletRequest request) {
+	public List<JsonObject> executeRequest(HttpServletRequest request) {
 		
 		try {
 			String accountId = request.getParameter(ACCOUNT_ID);

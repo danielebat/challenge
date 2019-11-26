@@ -7,7 +7,7 @@ import com.challenge.handler.account.AccountAction;
 /**
  * Class used to represent a transaction that a user can request through a HTTP request
  */
-public class Transaction extends JsonObject {
+public class Transaction extends MessageObject {
 
 	AccountAction action;
 	Integer sourceAccountId;

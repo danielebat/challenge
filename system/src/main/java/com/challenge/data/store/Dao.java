@@ -3,12 +3,12 @@ package com.challenge.data.store;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 
 /**
  * SuperClass to handle common requests and store data
  */
-public class Dao<T extends IdentityObject> {
+public class Dao<T extends JsonObject> {
 	
 	protected Map<Integer, T> entities;
 	private Integer id;

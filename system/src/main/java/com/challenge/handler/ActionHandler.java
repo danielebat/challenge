@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.google.gson.Gson;
 
 public abstract class ActionHandler extends AbstractHandler {
@@ -20,7 +20,7 @@ public abstract class ActionHandler extends AbstractHandler {
 	 * @param baseRequest Http Base request
 	 * @param jsonObjects List of objects to be put into the HTTP response
 	 */
-	public void buildHttpResponse(HttpServletResponse response, Request baseRequest, List<IdentityObject> jsonObjects) {
+	public void buildHttpResponse(HttpServletResponse response, Request baseRequest, List<JsonObject> jsonObjects) {
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

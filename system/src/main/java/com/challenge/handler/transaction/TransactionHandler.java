@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.transaction.TransactionListRequestExecutor;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.handler.ActionHandler;
 
 /**
@@ -38,7 +38,7 @@ public class TransactionHandler extends ActionHandler {
 			action = null;
 		}
 		
-		List<IdentityObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
+		List<JsonObject> jsonObjects = listExec.generateResponseMessage(true, StringUtils.EMPTY, null);
 		if (TransactionAction.LIST.equals(action))
 			jsonObjects = listExec.executeRequest(request);
 		

@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import com.challenge.util.account.AccountUtil;
 
 /**
- * Class representing the bank account of a user
+ * Class representing the bank account of a user that a user can request through a HTTP request
  */
-public class Account extends IdentityObject {
+public class Account extends JsonObject {
 
 	private String ibanCode;
 	private BigDecimal amount;

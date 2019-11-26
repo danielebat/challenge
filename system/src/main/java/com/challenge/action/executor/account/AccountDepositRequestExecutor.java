@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
 import com.challenge.data.model.Account;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
@@ -32,7 +32,7 @@ public class AccountDepositRequestExecutor extends AbstractRequestExecutor {
 		this.transactionDao = transactionDao;
 	}
 	
-	public List<IdentityObject> executeRequest(HttpServletRequest request) {
+	public List<JsonObject> executeRequest(HttpServletRequest request) {
 		
 		try {
 			String id = request.getParameter(ID);

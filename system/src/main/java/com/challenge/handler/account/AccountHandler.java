@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jetty.server.Request;
 
 import com.challenge.action.executor.AbstractRequestExecutor;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.ActionHandler;
 import com.google.common.collect.Lists;
@@ -39,7 +39,7 @@ public class AccountHandler extends ActionHandler {
 			action = null;
 		}
 		AbstractRequestExecutor actionExecutor = factory.create(action);
-		List<IdentityObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, AbstractRequestExecutor.ERROR_MESSAGE));
+		List<JsonObject> jsonObjects = Lists.newArrayList(new Transaction(null, null, null, null, AbstractRequestExecutor.ERROR_MESSAGE));
 		if(actionExecutor != null)
 			jsonObjects = actionExecutor.executeRequest(request);
 		

@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
@@ -45,7 +45,7 @@ public class AccountDeleteRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(account);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		
@@ -60,7 +60,7 @@ public class AccountDeleteRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList());
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -72,7 +72,7 @@ public class AccountDeleteRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(null);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account not available");
 	}

@@ -27,7 +27,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.challenge.data.model.Account;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.model.Transaction;
 import com.challenge.handler.account.AccountAction;
 import com.challenge.main.ApplicationModule;
@@ -65,7 +65,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "1", "EUR");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         Transaction tr = (Transaction) list.get(0);
         
         assertEquals(new BigDecimal(1000), tr.getAmount());
@@ -78,7 +78,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("-1000", "1", "EUR");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
@@ -89,7 +89,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "1", "EUR");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         uri = buildDeleteHttpRequest(((Transaction) list.get(0)).getSourceAccountId().toString());
         
@@ -106,7 +106,7 @@ public class AcceptanceTest {
         
         URI uri = buildDeleteHttpRequest("4354635");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
@@ -117,7 +117,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "2", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         uri = buildDepositHttpRequest(((Transaction) list.get(0)).getSourceAccountId().toString(), "200");
         
@@ -135,7 +135,7 @@ public class AcceptanceTest {
         
         URI uri = buildDepositHttpRequest("3", "-200");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
@@ -146,7 +146,7 @@ public class AcceptanceTest {
         
         URI uri = buildDepositHttpRequest("200", "4354635");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
@@ -157,7 +157,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "3", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         uri = buildWithdrawHttpRequest(((Transaction) list.get(0)).getSourceAccountId().toString(), "400");
         
@@ -174,7 +174,7 @@ public class AcceptanceTest {
         
         URI uri = buildWithdrawHttpRequest("3", "-400");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
@@ -185,7 +185,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "1", "EUR");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         Transaction tr = (Transaction) list.get(0);
         
         uri = buildWithdrawHttpRequest(((Transaction) list.get(0)).getSourceAccountId().toString(), "2000");
@@ -201,7 +201,7 @@ public class AcceptanceTest {
         
         URI uri = buildWithdrawHttpRequest("4354635", "200");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
 
         assertEquals("Unable to process request - Account not available", tr.getMessage());
@@ -215,7 +215,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "3", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		uri = buildCreateHttpRequest("2000", "4", "EUR");
@@ -241,7 +241,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "100", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		uri = buildCreateHttpRequest("2000", "101", "USD");
@@ -278,7 +278,7 @@ public class AcceptanceTest {
         
         URI uri = buildTransferHttpRequest("435463645", "3", "400");
         
-        List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Source Account not available", tr.getMessage());
@@ -291,7 +291,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "3", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
         
         uri = buildTransferHttpRequest(fromAccountId.toString(), "3245672", "400");
@@ -310,7 +310,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "3", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		
 		uri = buildCreateHttpRequest("2000", "4", "EUR");
@@ -334,7 +334,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "3", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		fromAccountId = ((Transaction) list.get(0)).getSourceAccountId();
 		toAccountId = ((Transaction) list.get(0)).getSourceAccountId();
         
@@ -351,7 +351,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildTransferHttpRequest("3", "4", "-1000");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		Transaction tr = (Transaction) list.get(0);
         
         assertEquals("Unable to process request - Amount is less than zero", tr.getMessage());
@@ -366,7 +366,7 @@ public class AcceptanceTest {
 		
 		uri = buildAccountListHttpRequest("1");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         assertTrue(list.size() >= 1);
 	}
@@ -376,7 +376,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildAccountListHttpRequest("8686");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         assertEquals(0, list.size());
 	}
@@ -386,7 +386,7 @@ public class AcceptanceTest {
 		
 		URI uri = buildCreateHttpRequest("1000", "1", "EUR");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
 		
 		uri = buildTransactionListHttpRequest(((Transaction) list.get(0)).getId().toString());
         
@@ -405,7 +405,7 @@ public class AcceptanceTest {
 		builder.clearParameters();
 		URI uri = buildTransactionListHttpRequest("8686");
         
-		List<IdentityObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
+		List<JsonObject> list = executeHttpRequestAndVerifyStatusForTransaction(uri, HttpServletResponse.SC_OK);
         
         assertEquals(0, list.size());
 	}
@@ -472,21 +472,21 @@ public class AcceptanceTest {
 		return uri;
 	}
 
-	private List<IdentityObject> executeHttpRequestAndVerifyStatusForTransaction(URI uri,
+	private List<JsonObject> executeHttpRequestAndVerifyStatusForTransaction(URI uri,
 			int status) throws IOException, ClientProtocolException {
 		String jsonString = executeHttpRequestandVerifyStatus(uri, status);
         
         Type returnListType = new TypeToken<ArrayList<Transaction>>(){}.getType();
-        List<IdentityObject> list = new Gson().fromJson(jsonString, returnListType);
+        List<JsonObject> list = new Gson().fromJson(jsonString, returnListType);
 		return list;
 	}
 	
-	private List<IdentityObject> executeHttpRequestAndVerifyStatusForAccount(URI uri,
+	private List<JsonObject> executeHttpRequestAndVerifyStatusForAccount(URI uri,
 			int status) throws IOException, ClientProtocolException {
 		String jsonString = executeHttpRequestandVerifyStatus(uri, status);
         
         Type returnListType = new TypeToken<ArrayList<Account>>(){}.getType();
-        List<IdentityObject> list = new Gson().fromJson(jsonString, returnListType);
+        List<JsonObject> list = new Gson().fromJson(jsonString, returnListType);
 		return list;
 	}
 

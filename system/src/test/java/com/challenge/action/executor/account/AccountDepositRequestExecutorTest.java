@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.challenge.data.model.Account;
 import com.challenge.data.model.Currency;
-import com.challenge.data.model.IdentityObject;
+import com.challenge.data.model.JsonObject;
 import com.challenge.data.store.AccountDao;
 import com.challenge.data.store.TransactionDao;
 import com.challenge.handler.account.AccountAction;
@@ -46,7 +46,7 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		when(dao.findById(53)).thenReturn(account);
 		when(dao.deposit(account, new BigDecimal(500))).thenReturn(new BigDecimal(1500));
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertReturnedTransaction(trList, transactionDao, AccountAction.DEPOSIT,
 				new BigDecimal(500), "Amount deposited successfully - Updated amount: 1500",
@@ -59,7 +59,7 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("amount", "500"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -69,7 +69,7 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		
 		mockRequestBehaviour(request, Lists.newArrayList("id", "53"));
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertJsonObjectWithErrorMessage(trList, null);
 	}
 	
@@ -81,7 +81,7 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		
 		when(dao.findById(53)).thenReturn(null);
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Account not available");
 	}
@@ -92,7 +92,7 @@ public class AccountDepositRequestExecutorTest extends RequestExecutorTest {
 		request = mock(HttpServletRequest.class);
 		mockRequestBehaviour(request, Lists.newArrayList("id", "53", "amount", "-1000"));
 		
-		List<IdentityObject> trList = executor.executeRequest(request);
+		List<JsonObject> trList = executor.executeRequest(request);
 		
 		assertEquals(1, trList.size());
 		assertJsonObjectWithErrorMessage(trList, "Amount is less than zero");
